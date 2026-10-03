@@ -127,6 +127,10 @@ button.b:hover{background:var(--navy-bg)} button.b.main{background:var(--navy);c
 #vb.show{display:flex}
 #vb video{max-width:100%;max-height:calc(100% - 60px);background:#000;border-radius:4px}
 #vb button{font:inherit;font-size:16px;padding:6px 18px;border-radius:4px;border:1px solid #fff;background:transparent;color:#fff;cursor:pointer;align-self:flex-end}
+.tip{position:relative;display:inline-block;color:var(--navy);font-weight:700;border-bottom:1px dashed var(--navy);cursor:help;outline:none}
+.tip::after{content:attr(data-tip);position:absolute;left:0;bottom:calc(100% + 10px);white-space:nowrap;background:#2b2a28;color:#fff;font-size:15px;font-weight:400;line-height:1.6;padding:6px 14px;border-radius:6px;opacity:0;visibility:hidden;transition:opacity .15s;pointer-events:none;z-index:5}
+.tip::before{content:"";position:absolute;left:18px;bottom:calc(100% + 2px);border:8px solid transparent;border-top-color:#2b2a28;border-bottom:0;opacity:0;visibility:hidden;transition:opacity .15s;z-index:5}
+.tip:hover::after,.tip:hover::before,.tip:focus::after,.tip:focus::before{opacity:1;visibility:visible}
 #view svg .nd{cursor:pointer}
 #view svg .dim{opacity:.12}
 #view svg text.dim{opacity:.18}
@@ -482,7 +486,7 @@ button.b:hover{background:var(--navy-bg)} button.b.main{background:var(--navy);c
 <div class="box">
   <h4>このあと</h4>
   <p>強み・弱みの候補が出たら、『自分の棚卸しガイド』の2章（フィードバック分析）で確かめ、3章・4章（SWOT・クロスSWOT）で世の中の動きと並べ、5章（誰に・何を・いくらで）で小さな計画にします。この別冊は、その手前の「材料を出して、分けて、見えるようにする」ところを受け持っています。</p>
-  <p><a href="guide.html">『自分の棚卸しガイド』を開く</a></p>
+  <p><span class="tip" tabindex="0" data-tip="上村までお問合せください">『自分の棚卸しガイド』を開く</span></p>
 </div>
 
 <p class="src">
