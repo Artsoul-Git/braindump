@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>自分の棚卸しガイド｜ブレインダンプ・フィードバック分析・SWOT・クロスSWOT</title>
+<style>
+:root{
+  --ink:#2b2a28; --sub:#5d5a55; --bg:#faf7f1; --paper:#ffffff; --line:#d9d2c5;
+  --navy:#1f3a5f; --kaki:#b85a32; --green:#3d7a5a; --gold:#a57a1c; --plum:#7a4a6e;
+  --navy-bg:#e9eef5; --kaki-bg:#f8ebe4; --green-bg:#e8f1ec; --gold-bg:#f6efdc; --plum-bg:#f1e8ef;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Hiragino Sans","Yu Gothic UI","Yu Gothic","Meiryo",sans-serif;
+  font-size:18px;line-height:1.95}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px 80px}
+header.cover{padding:56px 0 28px;border-bottom:3px double var(--line)}
+.kicker{color:var(--kaki);font-weight:700;letter-spacing:.12em;font-size:15px}
+h1{font-size:34px;line-height:1.45;margin:.3em 0 .4em;color:var(--navy)}
+.lead{font-size:19px;color:var(--sub);margin:0}
+h2{font-size:27px;line-height:1.5;color:var(--navy);margin:72px 0 8px;padding-top:20px;border-top:1px solid var(--line)}
+h2 .num{display:inline-block;min-width:44px;height:44px;line-height:44px;text-align:center;border-radius:50%;
+  background:var(--navy);color:#fff;font-size:20px;margin-right:12px;vertical-align:middle}
+h3{font-size:21px;margin:40px 0 8px;color:var(--ink);border-left:6px solid var(--kaki);padding-left:12px;line-height:1.6}
+p{margin:.8em 0}
+strong{background:linear-gradient(transparent 62%,#f3ddb0 62%)}
+.fig{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:20px 16px 12px;margin:24px 0;text-align:center}
+.fig svg{width:100%;max-width:480px;height:auto}
+.fig figcaption,.cap{font-size:15px;color:var(--sub);margin-top:6px;line-height:1.7}
+figure{margin:0}
+.box{background:var(--paper);border:1px solid var(--line);border-left:6px solid var(--navy);padding:16px 20px;margin:20px 0;border-radius:4px}
+.box.kaki{border-left-color:var(--kaki)} .box.green{border-left-color:var(--green)} .box.gold{border-left-color:var(--gold)}
+.box h4{margin:0 0 4px;font-size:18px}
+.box p:last-child,.box ul:last-child,.box ol:last-child{margin-bottom:0}
+ul,ol{padding-left:1.5em;margin:.6em 0}
+li{margin:.35em 0}
+
+/* 全体の地図 */
+.map{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:24px 0}
+.map a{display:block;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--line);
+  border-top:6px solid var(--navy);border-radius:4px;padding:14px 12px;position:relative}
+.map a:nth-child(2){border-top-color:var(--kaki)} .map a:nth-child(3){border-top-color:var(--green)} .map a:nth-child(4){border-top-color:var(--gold)}
+.map b{display:block;font-size:17px;line-height:1.5}
+.map span{display:block;font-size:15px;color:var(--sub);line-height:1.6;margin-top:4px}
+.map em{font-style:normal;font-size:14px;font-weight:700;color:var(--kaki)}
+
+/* 手順 */
+.steps{counter-reset:s;list-style:none;padding:0;margin:20px 0}
+.steps li{counter-increment:s;position:relative;background:var(--paper);border:1px solid var(--line);border-radius:4px;
+  padding:14px 18px 14px 64px;margin:10px 0}
+.steps li::before{content:counter(s);position:absolute;left:16px;top:16px;width:34px;height:34px;line-height:34px;
+  text-align:center;border-radius:50%;background:var(--kaki);color:#fff;font-weight:700}
+.steps b{display:block}
+
+/* 6つの問い */
+.asks{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:20px 0}
+.asks div{background:var(--paper);border:1px dashed #b9ae99;border-radius:4px;padding:12px 16px}
+.asks b{display:block;color:var(--navy)}
+.asks span{font-size:16px;color:var(--sub)}
+
+/* メモ用紙 */
+.memo{background:#fffdf4;border:1px solid #e3d9b8;padding:18px 22px;margin:20px 0;font-size:17px;
+  background-image:repeating-linear-gradient(transparent 0 37px,#ece3c6 37px 38px);line-height:38px;border-radius:2px}
+.memo ul{margin:0;list-style:"・";padding-left:1.2em}
+.memo li{margin:0}
+.tag{display:inline-block;font-size:14px;font-weight:700;padding:0 10px;border-radius:3px;line-height:1.9;background:var(--sub);color:#fff;margin-bottom:6px}
+
+/* 表 */
+table{width:100%;border-collapse:collapse;background:var(--paper);margin:16px 0;font-size:17px}
+th,td{border:1px solid var(--line);padding:10px 14px;text-align:left;vertical-align:top;line-height:1.75}
+th{background:var(--navy-bg);width:34%;font-weight:700}
+td .mark{font-weight:700;color:var(--kaki)}
+
+/* 2つの向き */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.two>div{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:16px 18px}
+.two h4{margin:0 0 6px;font-size:19px}
+.two .a{border-top:6px solid var(--navy)} .two .b{border-top:6px solid var(--kaki)}
+.two ol{margin:.2em 0}
+
+/* 差の読み方 */
+.read{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.read div{border-radius:4px;padding:14px 16px;border:1px solid var(--line);background:var(--paper)}
+.read b{display:block;font-size:18px}
+.read .up{background:var(--green-bg)} .read .eq{background:var(--navy-bg)} .read .dn{background:var(--kaki-bg)}
+.read span{font-size:16px}
+
+/* SWOT */
+.swot{display:grid;grid-template-columns:auto 1fr 1fr;gap:8px;margin:20px 0}
+.swot .h{font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;text-align:center;
+  background:#efe9dc;border-radius:4px;padding:8px;line-height:1.5}
+.swot .side{writing-mode:vertical-rl;letter-spacing:.1em;padding:10px 6px}
+.swot .c{border-radius:4px;padding:14px 16px;border:1px solid var(--line)}
+.swot .c b{font-size:20px;display:block;line-height:1.5}
+.swot .c small{display:block;font-size:14px;color:var(--sub);letter-spacing:.06em}
+.swot .c p{font-size:16px;margin:.4em 0 0;line-height:1.75}
+.swot .c ul{font-size:16px;line-height:1.75;margin:.4em 0 0}
+.S{background:var(--green-bg)} .W{background:var(--kaki-bg)} .O{background:var(--navy-bg)} .T{background:var(--plum-bg)}
+.SO{background:var(--green-bg)} .WO{background:var(--gold-bg)} .ST{background:var(--navy-bg)} .WT{background:var(--plum-bg)}
+
+/* 入力 */
+.tool{background:var(--paper);border:2px solid var(--navy);border-radius:6px;padding:20px;margin:24px 0}
+.tool h4{margin:0 0 4px;font-size:20px;color:var(--navy)}
+.tool label{display:block;font-weight:700;margin-top:14px;font-size:17px}
+.tool input{width:100%;font-size:18px;padding:10px 12px;border:1px solid #a9a08e;border-radius:4px;font-family:inherit;background:#fffef9}
+.tool input:focus{outline:3px solid #f3ddb0;border-color:var(--kaki)}
+.out{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.out div{border-radius:4px;padding:12px 14px;border:1px solid var(--line);font-size:17px;line-height:1.8}
+.out b{display:block;font-size:15px;color:var(--sub)}
+.out u{text-decoration:none;font-weight:700;border-bottom:2px solid var(--kaki)}
+.btns{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
+button{font:inherit;font-size:16px;padding:8px 18px;border-radius:4px;border:1px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer}
+button:hover{background:var(--navy-bg)}
+
+.loop{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:20px 0}
+.loop div{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:12px;font-size:16px;line-height:1.7;position:relative}
+.loop b{display:block;color:var(--navy);font-size:17px}
+.loopnote{text-align:center;font-size:16px;color:var(--kaki);font-weight:700;margin:-6px 0 20px}
+
+details{background:var(--paper);border:1px solid var(--line);border-radius:4px;margin:10px 0;padding:0 18px}
+summary{cursor:pointer;font-weight:700;padding:14px 0}
+details p{margin-top:0}
+
+.src{font-size:15px;color:var(--sub);border-top:1px solid var(--line);margin-top:64px;padding-top:16px;line-height:1.8}
+#top{position:fixed;right:18px;bottom:18px;width:52px;height:52px;border-radius:50%;padding:0;background:var(--navy);color:#fff;border:none;font-size:20px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+#top:hover{background:#16304f}
+
+.author{margin:14px 0 0;font-size:17px;font-weight:700;color:var(--ink)}
+.notice{color:#b3261e;font-size:15px;line-height:1.7;margin:6px 0 0;font-weight:700}
+.foot{margin-top:28px;padding-top:16px;border-top:3px double var(--line);text-align:center}
+.foot .copy{font-size:15px;color:var(--sub);margin:8px 0 0}
+h2,#tool,#calc{scroll-margin-top:64px}
+#nav{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(31,58,95,.97);display:flex;gap:4px;justify-content:center;
+  overflow-x:auto;white-space:nowrap;padding:7px 12px;transform:translateY(-100%);transition:transform .25s;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+#nav.show{transform:none}
+#nav a{color:#fff;text-decoration:none;font-size:15px;line-height:1.6;padding:5px 12px;border-radius:4px;flex:none}
+#nav a:hover{background:rgba(255,255,255,.18)}
+#nav a.on{background:#fff;color:var(--navy);font-weight:700}
+.formula{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;font-weight:700;margin:20px 0}
+.formula span{padding:8px 16px;border-radius:4px;border:1px solid var(--line);background:var(--paper)}
+.formula span.goal{background:var(--gold-bg);border-color:var(--gold)}
+.formula i{font-style:normal;font-size:22px;color:var(--sub)}
+.asks.four div b{color:var(--kaki)}
+.calcin{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.result{margin-top:18px;background:var(--gold-bg);border:1px solid var(--gold);border-radius:4px;padding:14px 18px;font-size:18px;line-height:2}
+.result b{font-size:24px;color:var(--navy)}
+.print-only{display:none}
+#sub{scroll-margin-top:64px}
+.grp{border:1px solid var(--line);border-radius:4px;padding:4px 16px 16px;margin-top:16px;background:#fdfcf8}
+.grp>b{display:block;margin-top:10px;color:var(--navy);font-size:18px}
+.grp.e{border-left:6px solid var(--kaki)} .grp.s{border-left:6px solid var(--navy)} .grp.g{border-left:6px solid var(--gold)}
+.grp small{display:block;font-size:14px;color:var(--sub);line-height:1.6;font-weight:400}
+.presets{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.rng{display:flex;align-items:center;gap:12px}
+.rng input{flex:1;padding:0}
+.rng output{font-weight:700;min-width:3.5em;text-align:right}
+.chart{margin-top:22px}
+.chart h5{margin:0 0 2px;font-size:17px}
+.chart svg{width:100%;max-width:680px;height:auto;display:block}
+.legend{font-size:14px;color:var(--sub);display:flex;gap:14px;flex-wrap:wrap;line-height:1.8}
+.legend i{display:inline-block;width:12px;height:12px;margin-right:5px;vertical-align:-1px;border-radius:2px}
+.msg{margin-top:10px;padding:10px 14px;border-radius:4px;font-size:17px;line-height:1.8;background:var(--green-bg);border:1px solid var(--green)}
+.msg.warn{background:var(--kaki-bg);border-color:var(--kaki)}
+.sens{margin-top:8px}
+.sens div{display:grid;grid-template-columns:11.5em 1fr;gap:8px;align-items:center;font-size:16px;margin:6px 0;line-height:1.5}
+.sens span.bar{display:block;height:20px;background:var(--green);border-radius:3px;min-width:2px}
+.sens small{display:block;font-size:14px;color:var(--sub)}
+.cmp{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+.cmp>div{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:14px 16px;font-size:16px;line-height:1.8}
+.cmp h5{margin:0 0 4px;font-size:17px;color:var(--navy);line-height:1.5}
+.cmp b{font-size:20px}
+.cmp .hb{height:14px;background:#e6dfd0;border-radius:3px;overflow:hidden;margin:2px 0 6px}
+.cmp .hb i{display:block;height:100%;background:var(--navy)}
+.cmp .hb i.over{background:var(--kaki)}
+.cmp small{color:var(--sub);font-size:14px;display:block;line-height:1.6}
+@media (max-width:640px){.cmp{grid-template-columns:1fr}.sens div{grid-template-columns:1fr}.swot.ex{grid-template-columns:1fr}.swot.ex .h{display:none}}
+
+@media (max-width:640px){
+  #nav{justify-content:flex-start}
+  .calcin{grid-template-columns:1fr}
+  body{font-size:17px}
+  h1{font-size:26px} h2{font-size:22px} h3{font-size:19px}
+  .map,.loop{grid-template-columns:1fr 1fr}
+  .asks,.two,.read,.out{grid-template-columns:1fr}
+  th{width:38%} th,td{padding:8px 10px;font-size:16px}
+  .swot{grid-template-columns:1fr 1fr}
+  .swot .side,.swot .corner{display:none}
+  .swot .c{padding:12px}
+}
+@page{size:A4;margin:14mm}
+@media print{
+  #top,.btns,#nav{display:none} body{background:#fff;font-size:12pt}
+  h2{break-before:page} .fig,.box,.tool,table,.swot{break-inside:avoid}
+  /* 「この欄を印刷する」を押したとき：掛け合わせの欄だけをA4 1枚に */
+  body.print-tool .wrap>*:not(#tool){display:none}
+  body.print-tool .wrap{padding:0;max-width:none}
+  body.print-tool #tool{border:none;margin:0;padding:0}
+  body.print-tool #tool .screen-only{display:none}
+  body.print-tool .print-only{display:block}
+  body.print-tool #tool h4{font-size:18pt;margin-bottom:2mm}
+  body.print-tool #tool input{border:none;border-bottom:1px solid #777;border-radius:0;background:#fff;padding:2mm 0;font-size:13pt}
+  body.print-tool #tool input::placeholder{color:transparent}
+  body.print-tool .out div{min-height:52mm;font-size:12pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<nav id="nav" aria-label="ページ内の移動">
+  <a href="#s0">棚卸しとは</a><a href="#s1">① ブレインダンプ</a><a href="#s2">② フィードバック分析</a><a href="#s3">③ SWOT</a><a href="#s4">④ クロスSWOT</a><a href="#s5">⑤ 小さな計画</a><a href="#s6">進め方</a>
+</nav>
+<div class="wrap">
+
+<header class="cover" id="pagetop">
+  <div class="kicker">自分の棚卸しガイド</div>
+  <h1>これまでの自分を数え直し、<br>次の一手を決める</h1>
+  <p class="lead">ブレインダンプ → フィードバック分析 → SWOT分析 → クロスSWOT分析</p>
+  <p class="author">制作：上村コーチ</p>
+  <p class="notice">許可なく複製・転載・転記・配布・公開することを禁じます。</p>
+</header>
+
+<div class="box green" style="margin-top:28px">
+  <p><strong>一度に全部はやりません。</strong>1回15〜40分ほどの作業を、7回に分けて進めます。今日は1章まで読んで、書き出せば足ります（15分）。2章から先は、その日の分を読みながら進めます。進め方の一覧は<a href="#s6">6章</a>にあります。</p>
+  <p>この棚卸しは、勤めを続けながら収入の柱をもう一本持つとしたら何ができるかを、自分の経験から確かめるためのものです。1〜4章は紙の上の作業で、勤め先に関係なく一人で進められます。人に声をかける前に確かめることは、5章の最後にまとめています。</p>
+  <p>言葉を書き出して色で分け、AIと図で見えるようにする方法は、<a href="./">別冊（キーワードの色分けと、AIで見える化）</a>にまとめています。</p>
+</div>
+
+<!-- ============ 棚卸しとは ============ -->
+<h2 id="s0"><span class="num">0</span>棚卸しとは何をすることか</h2>
+
+<p>お店では、年に何度か「棚卸し」をします。棚にある商品を一つずつ手に取り、<strong>何が・いくつ・どんな状態であるか</strong>を数えて、帳面に書く作業です。数えてみると、売れ筋だと思っていた品が奥で眠っていたり、忘れていた良い品が出てきたりします。</p>
+
+<p>自分の棚卸しも同じです。これまでの仕事や暮らしの中で積み上げてきた<strong>経験・できること・人とのつながり・持っている道具や資格</strong>を、頭の中から紙の上に出し、数え直します。</p>
+
+<figure class="fig">
+<svg viewBox="0 0 360 220" role="img" aria-label="棚に並んだ箱を一つずつ数えて帳面に書く様子">
+  <rect x="18" y="18" width="226" height="186" fill="#fff" stroke="#1f3a5f" stroke-width="3" rx="3"/>
+  <line x1="18" y1="80" x2="244" y2="80" stroke="#1f3a5f" stroke-width="3"/>
+  <line x1="18" y1="142" x2="244" y2="142" stroke="#1f3a5f" stroke-width="3"/>
+  <g font-size="15" text-anchor="middle" font-weight="700" fill="#2b2a28">
+    <rect x="32" y="34" width="86" height="42" fill="#e8f1ec" stroke="#3d7a5a" stroke-width="2"/><text x="75" y="61">経験</text>
+    <rect x="130" y="34" width="100" height="42" fill="#e9eef5" stroke="#1f3a5f" stroke-width="2"/><text x="180" y="61">できること</text>
+    <rect x="32" y="96" width="112" height="42" fill="#f8ebe4" stroke="#b85a32" stroke-width="2"/><text x="88" y="123">人のつながり</text>
+    <rect x="156" y="96" width="74" height="42" fill="#f6efdc" stroke="#a57a1c" stroke-width="2"/><text x="193" y="123">資格</text>
+    <rect x="32" y="158" width="74" height="42" fill="#f1e8ef" stroke="#7a4a6e" stroke-width="2"/><text x="69" y="185">道具</text>
+    <rect x="118" y="158" width="112" height="42" fill="#fff" stroke="#8a8377" stroke-width="2" stroke-dasharray="5 4"/><text x="174" y="185" fill="#5d5a55">忘れていた物</text>
+  </g>
+  <rect x="268" y="48" width="76" height="112" fill="#fffdf4" stroke="#2b2a28" stroke-width="2.5" rx="3"/>
+  <rect x="290" y="40" width="32" height="14" fill="#8a8377" rx="3"/>
+  <g stroke="#3d7a5a" stroke-width="3" fill="none" stroke-linecap="round">
+    <path d="M278 76l5 5 8-10"/><path d="M278 100l5 5 8-10"/><path d="M278 124l5 5 8-10"/>
+  </g>
+  <g stroke="#b9ae99" stroke-width="2.5" stroke-linecap="round">
+    <line x1="298" y1="78" x2="334" y2="78"/><line x1="298" y1="102" x2="334" y2="102"/><line x1="298" y1="126" x2="328" y2="126"/><line x1="278" y1="146" x2="320" y2="146"/>
+  </g>
+  <text x="306" y="184" font-size="14" text-anchor="middle" fill="#5d5a55">数えて、書く</text>
+</svg>
+<figcaption>図1　棚にある物を一つずつ手に取り、帳面に書く。自分の棚卸しも、やることは同じです。</figcaption>
+</figure>
+
+<h3>4つの道具と、使う順番</h3>
+<p>棚卸しには4つの道具を使います。それぞれ役目が違い、前の道具で出た結果が、次の道具の材料になります。</p>
+
+<div class="map">
+  <a href="#s1"><em>① 出す</em><b>ブレインダンプ</b><span>頭の中にあるものを、選ばずに全部紙に出す</span></a>
+  <a href="#s2"><em>② 確かめる</em><b>フィードバック分析</b><span>「こうなるはず」と「実際」を比べ、強みを確かめる</span></a>
+  <a href="#s3"><em>③ 並べる</em><b>SWOT分析</b><span>自分のこと・世の中のことを4つの箱に分ける</span></a>
+  <a href="#s4"><em>④ 決める</em><b>クロスSWOT分析</b><span>箱どうしを掛け合わせ、次にやることを決める</span></a>
+</div>
+<p class="cap">図2　全体の地図。①で出した材料を、②で確かめ、③で並べ、④で次の一手に変えます。</p>
+<p>4つの道具で決めた一手は、そのあと5章で「誰に・何を・いくらで」という数字のついた小さな計画に置き直します。</p>
+
+<!-- ============ 1 ブレインダンプ ============ -->
+<h2 id="s1"><span class="num">1</span>ブレインダンプ ―― 頭の中を紙に出す</h2>
+
+<h3>考え方</h3>
+<p>ブレインダンプは、頭（ブレイン）の中にあるものを、紙の上にどさっと降ろす（ダンプ）ことです。</p>
+<p>頭の中だけで自分のことを考えると、同じところをぐるぐる回ります。「思い出す」と「良し悪しを決める」を同時にやっているからです。思い出したそばから「これは大したことではない」と自分で棚に戻してしまい、紙には何も残りません。</p>
+<p>そこで、作業を2つに分けます。<strong>先に出す。分けるのは後。</strong>出している間は、良し悪しを一切決めません。</p>
+
+<figure class="fig">
+<svg viewBox="0 0 360 200" role="img" aria-label="頭の中でからまっている考えを、紙の上に一行ずつ出す様子">
+  <circle cx="84" cy="92" r="58" fill="#fff" stroke="#1f3a5f" stroke-width="3"/>
+  <path d="M48 92c10-34 34-30 30-6s28 26 30 2-22-40-40-22 6 50 28 44 26-30 8-40" fill="none" stroke="#b85a32" stroke-width="2.5" stroke-linecap="round"/>
+  <text x="84" y="178" font-size="15" text-anchor="middle" fill="#2b2a28" font-weight="700">頭の中</text>
+  <g stroke="#2b2a28" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="158" y1="92" x2="212" y2="92"/><path d="M200 80l14 12-14 12"/>
+  </g>
+  <rect x="232" y="26" width="108" height="134" fill="#fffdf4" stroke="#2b2a28" stroke-width="2.5" rx="2"/>
+  <g stroke="#b85a32" stroke-width="2.5" stroke-linecap="round">
+    <line x1="246" y1="48" x2="322" y2="48"/><line x1="246" y1="68" x2="306" y2="68"/><line x1="246" y1="88" x2="326" y2="88"/>
+    <line x1="246" y1="108" x2="296" y2="108"/><line x1="246" y1="128" x2="318" y2="128"/><line x1="246" y1="146" x2="286" y2="146"/>
+  </g>
+  <text x="286" y="178" font-size="15" text-anchor="middle" fill="#2b2a28" font-weight="700">紙の上</text>
+</svg>
+<figcaption>図3　からまったままでは数えられません。一行ずつ紙に出すと、数えられる形になります。</figcaption>
+</figure>
+
+<h3>やり方</h3>
+<p>用意するものは、紙（A4を数枚）、書きやすいペン、時計の3つです。パソコンやスマートフォンのメモでも構いません。途中で直したくなって手が止まるようなら、紙に手で書きます。</p>
+
+<ol class="steps">
+  <li><b>時間を15分と決める</b>終わりの時刻が決まっていると、手が止まりにくくなります。</li>
+  <li><b>下の「6つの問い」を上から順に見て、浮かんだことを一行ずつ書く</b>文章にしなくて構いません。単語や短い言葉で十分です。</li>
+  <li><b>4つの約束を守る</b>「手を止めない」「消さない」「良し悪しを決めない」「きれいに書こうとしない」。</li>
+  <li><b>手が止まったら、年代で区切る</b>「20代のころは」「30代のころは」と、10年ごとに思い出すと続きが出てきます。働いた年数が短ければ、異動・担当替え・転職ごとに区切ります。</li>
+  <li><b>一晩おいて、翌日に書き足す</b>書き終えたあとの数時間で、ふと思い出すことがあります。それも同じ紙に足します。</li>
+  <li><b>最後に、3つの印をつけて分ける</b>事実（やったこと・起きたこと）に◯、気持ち（うれしかった・つらかった）に△、これからのこと（やりたい・気がかり）に☆。◯は2章で、△は3章の強み・弱みの手がかりに、☆は5章の目標に使います。</li>
+</ol>
+
+<h3>6つの問い</h3>
+<div class="asks">
+  <div><b>やってきたこと</b><span>どんな仕事・役目を、何年くらい続けたか</span></div>
+  <div><b>頼まれたこと・礼を言われたこと</b><span>人から「お願い」「助かった」と言われたのは何か</span></div>
+  <div><b>苦にならなかったこと</b><span>周りは嫌がるのに、自分は平気でやれたことは何か</span></div>
+  <div><b>うまくいかなかったこと</b><span>苦労したこと、避けてきたことは何か</span></div>
+  <div><b>持っているもの</b><span>資格、道具、場所、人とのつながり</span></div>
+  <div><b>いま気になっていること</b><span>やってみたいこと、気がかりなこと</span></div>
+</div>
+
+<div class="box green">
+  <h4>「自分には強みがない」と感じるとき</h4>
+  <p>強みは、本人にとっては当たり前にやっていたことであることが多く、自分では気づきにくいものです。「頼まれたこと・礼を言われたこと」の欄から書いてみてください。人がわざわざ頼んできたことは、その人には難しかったことです。</p>
+</div>
+
+<h3>書いた例</h3>
+<p>この先の説明では、ひとつの例を通して使います。<strong>Aさん（50代後半・食品工場で品質管理を30年）という架空の人物</strong>です。年数や職種が違っても、手順は同じです。</p>
+<div class="memo">
+  <span class="tag">Aさんの紙（一部）</span>
+  <ul>
+    <li>◯ 食品工場の品質管理を30年</li>
+    <li>◯ 新人に検査の手順を教える係を10年</li>
+    <li>◯ 検査の手順書を作り直した。他の工場からも「使わせてほしい」と言われた</li>
+    <li>△ 苦情の報告書を書くのは苦にならなかった</li>
+    <li>△ 朝礼で話すのは苦手だった</li>
+    <li>◯ 表計算は自己流</li>
+    <li>◯ 町内会の会計を6年</li>
+    <li>◯ 商工会に知り合いが数人いる</li>
+    <li>☆ 定年のあとの収入が気がかり</li>
+  </ul>
+</div>
+<div class="memo">
+  <span class="tag">Bさん（40代・事務職20年）の紙</span>
+  <ul>
+    <li>◯ 職場で「あの書類はどこ」と聞かれる係になっている</li>
+    <li>◯ 引き継ぎのメモを作ったら、後任から質問がほとんど来なかった</li>
+    <li>◯ 子どもの習い事の当番表と会計を3年</li>
+    <li>△ 人の予定を調整するのは苦にならない</li>
+    <li>☆ 使える時間は平日の夜と週末に少し</li>
+  </ul>
+</div>
+<p class="cap">Bさんも架空の人物です。大きな実績でなくて構いません。日々の仕事や暮らしの中で、頼まれて引き受けてきたことが材料になります。</p>
+
+<div class="box kaki">
+  <h4>この段階で出てくる言葉は、まだ「材料」です</h4>
+  <p>「品質管理を30年」は事実ですが、それが強みかどうかは、まだ分かりません。長く続けたことと、うまくやれたことは別だからです。それを確かめるのが、次のフィードバック分析です。</p>
+</div>
+
+<!-- ============ 2 フィードバック分析 ============ -->
+<h2 id="s2"><span class="num">2</span>フィードバック分析 ―― 期待と結果を比べて、強みを確かめる</h2>
+
+<h3>考え方</h3>
+<p>経営学者のピーター・ドラッカーは、<strong>人は自分の強みを分かっているつもりでいるが、たいていは違っている</strong>と述べ、強みを知る方法としてフィードバック分析を挙げました。</p>
+<p>もとの方法は結果が出るまで待つものですが、<strong>過去の出来事に当てはめれば、今日から使えます</strong>（このあと説明します）。強みが無いと感じている人も、同じ方法で確かめられます。</p>
+<p>もとの方法でやることは、次の2つです。</p>
+<div class="box">
+  <ol>
+    <li>何か大事なことを決めたり、始めたりするとき、<strong>「こうなるはずだ」という期待を書き留めておく</strong>。</li>
+    <li><strong>9か月から12か月たったら、実際の結果と見比べる</strong>。</li>
+  </ol>
+</div>
+<p>自分の感想ではなく、「書いておいた期待」と「実際に起きたこと」という2つの記録を比べるところが要です。感想は日によって変わりますが、記録は変わりません。ドラッカーは、これを続けると2〜3年ほどで自分の強みが見えてくると述べています。</p>
+
+<h3>差の読み方</h3>
+<div class="read">
+  <div class="up"><b>期待より良かった</b><span>自分で思っているより得意なこと。<strong>強みの候補</strong>です。</span></div>
+  <div class="eq"><b>期待どおりだった</b><span>安定してやれること。見立ても合っています。</span></div>
+  <div class="dn"><b>期待に届かなかった</b><span>理由を分けます。知識が足りなかったのか、やり方が合わなかったのか、自分に向いていないのか、周りの事情か。</span></div>
+</div>
+
+<p>差が分かったら、強みが生きる場所に力を集めます（結果を受けてドラッカーが挙げた行動は、6章の「手が止まったとき」にまとめています）。</p>
+
+<h3>向きは2つある ―― これからの決定にも、これまでの出来事にも使える</h3>
+<p>ドラッカーが述べた方法は、「これから決めること・始めること」について先に期待を書いておくものです。結果が出るまで9〜12か月待ちます。</p>
+<p>同じ見方を、<strong>ブレインダンプで出した過去の出来事</strong>に当てはめることができます。過去の出来事は、すでに結果が出ています。「あのとき、どうなると思っていたか」を思い出して書けば、待たずに今日、期待と結果を比べられます。</p>
+
+<figure class="fig">
+<svg viewBox="0 0 360 190" role="img" aria-label="今日を中心に、過去の出来事をふり返る向きと、これからの決定を書いて待つ向きの2つがある">
+  <line x1="24" y1="104" x2="336" y2="104" stroke="#8a8377" stroke-width="3"/>
+  <circle cx="60" cy="104" r="11" fill="#b85a32"/><circle cx="180" cy="104" r="13" fill="#2b2a28"/><circle cx="300" cy="104" r="11" fill="#1f3a5f"/>
+  <g font-size="14" text-anchor="middle" fill="#2b2a28" font-weight="700">
+    <text x="60" y="136">過去の出来事</text><text x="180" y="138">今日</text><text x="300" y="136">9〜12か月後</text>
+  </g>
+  <g fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M168 86C140 44 96 44 70 82" stroke="#b85a32"/><path d="M84 76l-15 8 1-17" stroke="#b85a32"/>
+    <path d="M192 86C220 44 264 44 290 82" stroke="#1f3a5f"/><path d="M276 76l15 8-1-17" stroke="#1f3a5f"/>
+  </g>
+  <g font-size="14" text-anchor="middle" font-weight="700">
+    <text x="104" y="34" fill="#b85a32">ふり返って比べる</text><text x="256" y="34" fill="#1f3a5f">書いておいて比べる</text>
+  </g>
+  <g font-size="13" text-anchor="middle" fill="#5d5a55">
+    <text x="104" y="168">今日すぐ分かる</text><text x="256" y="168">待つが、確か</text>
+  </g>
+</svg>
+<figcaption>図4　今日を中心に、2つの向きがあります。左は棚卸しのふり返りに、右はこれからの確かめに使います。</figcaption>
+</figure>
+
+<div class="two">
+  <div class="b">
+    <h4>過去に使う（ふり返り）</h4>
+    <ol>
+      <li>ブレインダンプの紙から、◯の出来事を一つ選ぶ</li>
+      <li>当時、何を決めた・始めたかを書く（大きな決断でなくて構いません。頼まれて引き受けたこと、やり方を少し変えたことも入ります）</li>
+      <li>そのとき、どうなると思っていたかを書く</li>
+      <li>実際はどうなったかを書く</li>
+      <li>差と、その理由を書く</li>
+      <li>そこから言える自分の持ち味を一行で書く</li>
+    </ol>
+  </div>
+  <div class="a">
+    <h4>未来に使う（ドラッカーが述べた方法）</h4>
+    <ol>
+      <li>これから決めること・始めることを書く</li>
+      <li>どうなると期待するかを、日付と一緒に書く</li>
+      <li>見直す日を手帳やカレンダーに入れる</li>
+      <li>9〜12か月後、実際の結果を書く</li>
+      <li>差と、その理由を書く</li>
+      <li>強み・弱みの見立てを直す</li>
+    </ol>
+  </div>
+</div>
+
+<div class="box gold">
+  <h4>過去に使うときに、気をつけること</h4>
+  <p>過去に当てはめる使い方は応用です。当時書いておいた期待ではなく、<strong>いま思い出した期待</strong>を使うことになります。人の記憶は、結果を知ったあとで「最初からそう思っていた」と書き換わりやすいものです。次の3つで補います。</p>
+  <ul>
+    <li><strong>当時の記録にあたる</strong>：手帳、日記、仕事の書類、メール、予定表、日報、目標と実績の記録、年賀状、写真。</li>
+    <li><strong>当時を知る人に聞く</strong>：「あのころ、自分は何と言っていたか」。</li>
+    <li><strong>思い出せないものは「覚えていない」と書く</strong>：もっともらしく埋めると、確かめる意味がなくなります。</li>
+  </ul>
+  <p>3つすべてをやる必要はありません。できるものを1つで構いません。</p>
+</div>
+
+<h3>ふり返りの記入例（Aさん）</h3>
+<table>
+  <tr><th>選んだ出来事</th><td>45歳のとき、新人向けの検査手順書を作り直した</td></tr>
+  <tr><th>当時の期待</th><td>「読めば分かる物にすれば、新人からの質問は半分くらいに減るだろう」</td></tr>
+  <tr><th>実際の結果</th><td>質問は減った。さらに、他の工場から「うちでも使わせてほしい」と頼まれた</td></tr>
+  <tr><th>差</th><td><span class="mark">期待より良かった</span></td></tr>
+  <tr><th>理由</th><td>現場の人がどこで迷うかを知っていて、迷う順に書いたから</td></tr>
+  <tr><th>持ち味</th><td>作業で迷う場所を先回りして、手順を文書にできる</td></tr>
+  <tr><th>確かめた記録</th><td>当時の手順書が手元に残っている（版と日付が入っている）</td></tr>
+</table>
+<table>
+  <tr><th>選んだ出来事</th><td>50歳のとき、係長として朝礼で改善の方針を話した</td></tr>
+  <tr><th>当時の期待</th><td>「口で説明すれば伝わって、翌週から動いてくれるだろう」</td></tr>
+  <tr><th>実際の結果</th><td>動かなかった。同じ内容を紙にまとめて配ったあとで、動き始めた</td></tr>
+  <tr><th>差</th><td><span class="mark">期待に届かなかった</span></td></tr>
+  <tr><th>理由</th><td>話して伝えるのは得意ではない。書いて伝えるほうが伝わる</td></tr>
+  <tr><th>持ち味</th><td>伝えるときは、先に文書を渡す形が合っている</td></tr>
+</table>
+<p>2つを並べると、「30年勤めた」という年数からは見えなかったことが見えてきます。Aさんの強みは「品質管理の経験」そのものというより、<strong>「迷う場所を先回りして文書にする力」</strong>でした。苦手なことも、避け方まで含めて分かりました。</p>
+<div class="box">
+  <h4>Bさん（事務職）の場合</h4>
+  <p>出来事：引き継ぎのメモを作った　／　当時の期待：質問が半分に減れば十分　／　実際：質問はほとんど来なかった（期待より良かった）　／　持ち味：次の人が迷うところを、先に書いておける</p>
+</div>
+
+<h3>ふり返りと、これからを、輪にする</h3>
+<div class="loop">
+  <div><b>過去をふり返る</b>出来事ごとに、期待と結果を比べる</div>
+  <div><b>強みの見当をつける</b>「たぶん、これが得意だ」という仮の答えを持つ</div>
+  <div><b>次の決定に期待を書く</b>その強みを使う行動を決め、期待を書く</div>
+  <div><b>結果と比べる</b>9〜12か月後。見当が合っていたかが分かる</div>
+</div>
+<p class="loopnote">↻ 比べた結果は、次の棚卸しの材料になります</p>
+<p>ふり返りで得られるのは「見当」です。これからの決定に期待を書き、結果と比べることで、その見当が確かなものになっていきます。</p>
+
+<!-- ============ 3 SWOT ============ -->
+<h2 id="s3"><span class="num">3</span>SWOT分析 ―― 4つの箱に分けて並べる</h2>
+
+<h3>考え方</h3>
+<p>ここまでで、自分についての材料がそろいました。SWOT（スウォット）分析は、それを<strong>世の中の動きと並べて眺める</strong>ための道具です。自分に強みがあっても、それを必要とする人がいなければ仕事にはなりません。逆に、世の中に求めがあっても、自分に応える力がなければ届きません。両方を一枚に置きます。</p>
+<p>分け方は2つの問いで決まります。</p>
+<ul>
+  <li><strong>自分のことか、世の中のことか</strong>（自分で変えられるか、変えられないか）</li>
+  <li><strong>追い風か、向かい風か</strong></li>
+</ul>
+
+<div class="swot">
+  <div class="corner"></div><div class="h">追い風</div><div class="h">向かい風</div>
+  <div class="h side">自分のこと</div>
+  <div class="c S"><small>STRENGTH</small><b>S　強み</b><p>自分が持っていて、役に立つもの</p></div>
+  <div class="c W"><small>WEAKNESS</small><b>W　弱み</b><p>自分に足りないもの、不得手なこと</p></div>
+  <div class="h side">世の中のこと</div>
+  <div class="c O"><small>OPPORTUNITY</small><b>O　機会</b><p>外で起きている、自分に有利な変化</p></div>
+  <div class="c T"><small>THREAT</small><b>T　脅威</b><p>外で起きている、自分に不利な変化</p></div>
+</div>
+<p class="cap">図5　上の段は自分のこと、下の段は世の中のこと。左は追い風、右は向かい風です。</p>
+
+<h3>やり方</h3>
+<ol class="steps">
+  <li><b>紙に十字の線を引き、4つの箱を作る</b></li>
+  <li><b>S（強み）を書く</b>フィードバック分析で「期待より良かった」ものを入れます。あわせて、ブレインダンプの「持っているもの」（経験の年数、資格、人のつながり）のうち、事実として書けるものも入れて構いません。△のうち「苦にならなかった」ことも手がかりになります。</li>
+  <li><b>W（弱み）を書く</b>「期待に届かなかった」もののうち、理由が自分の側にあったものを入れます。これからやろうとしていることに要りそうで、やったことがないことも、ここに書きます。△のうち「苦手だった」ことも手がかりになります。</li>
+  <li><b>O（機会）とT（脅威）を書く</b>新聞、業界や地域の集まり、職場の同僚や知り合いの困りごと、家族や友人の「これが面倒」という声など、自分の外で見聞きしたことを入れます。大きな社会の動きでなくて構いません。勤め先のお客さんや社内の事情をそのまま使う案は避けます（5章の最後を参照）。</li>
+  <li><b>各箱3つを目安に絞る</b>たくさん書くより、確かなものを少なく置くほうが次の段階で使えます。</li>
+</ol>
+
+<div class="box kaki">
+  <h4>取り違えやすいところ：「機会」は、自分のやりたいことではありません</h4>
+  <p>「資格を取る」「教室を開く」は、自分の行動なので機会には入りません（行動は次のクロスSWOTで考えます）。迷ったら、こう問います。</p>
+  <p><strong>「自分が何もしなくても、それは起きているか」</strong>――「はい」なら世の中のこと（機会か脅威）です。「いいえ」のときは、もう一つ問います。<strong>「それは、いま持っているものか、これからやることか」</strong>――いま持っているものなら強みか弱み、これからやることは箱に入れず、次のクロスSWOTで考えます。</p>
+</div>
+<div class="box green">
+  <h4>書き方：性格の言葉ではなく、事実で書く</h4>
+  <p>「まじめ」「責任感がある」は、読んだ人が確かめられません。「30年間、検査記録を一日も欠かさなかった」と書けば、同じことが事実として伝わります。フィードバック分析で確かめたことをそのまま使うと、自然に事実の言葉になります。</p>
+</div>
+
+<h3>記入例（Aさん）</h3>
+<div class="swot ex">
+  <div class="corner"></div><div class="h">追い風</div><div class="h">向かい風</div>
+  <div class="h side">自分のこと</div>
+  <div class="c S"><b>S　強み</b><ul><li>迷う場所を先回りして手順を文書にできる</li><li>品質管理の現場を30年知っている</li><li>町内会の会計を6年続けた</li></ul></div>
+  <div class="c W"><b>W　弱み</b><ul><li>人前で話して伝えるのは不得手</li><li>表計算は自己流</li><li>営業をした経験がない</li></ul></div>
+  <div class="h side">世の中のこと</div>
+  <div class="c O"><b>O　機会</b><ul><li>小さな食品の店が、衛生管理の記録づくりに困っていると商工会で聞いた</li><li>経験者に短い時間だけ手伝ってほしい、という声がある</li></ul></div>
+  <div class="c T"><b>T　脅威</b><ul><li>同じ分野には、資格を持つ専門家がすでにいる</li><li>文書の下書きはAIで作れるようになってきた</li><li>お金をかけず、自分たちで何とかしている店も多い</li></ul></div>
+</div>
+<p class="cap">図6　Aさんの例。機会と脅威は、Aさんが実際に見聞きしたことを書いています。</p>
+
+<!-- ============ 4 クロスSWOT ============ -->
+<h2 id="s4"><span class="num">4</span>クロスSWOT分析 ―― 掛け合わせて、次の一手を決める</h2>
+
+<h3>考え方</h3>
+<p>SWOT分析は、並べて眺めるところまでです。「では、何をするか」は出てきません。クロスSWOT分析は、<strong>自分のこと（S・W）と世の中のこと（O・T）を一つずつ掛け合わせ</strong>、行動の案を作ります。組み合わせは4通りです。</p>
+
+<div class="swot">
+  <div class="corner"></div><div class="h">O　機会</div><div class="h">T　脅威</div>
+  <div class="h side">S 強み</div>
+  <div class="c SO"><b>強み × 機会</b><p>強みを使って、機会をつかむ。<br><strong>まず考える場所</strong></p></div>
+  <div class="c ST"><b>強み × 脅威</b><p>強みを使って、脅威をかわす・違いを出す</p></div>
+  <div class="h side">W 弱み</div>
+  <div class="c WO"><b>弱み × 機会</b><p>弱みを補って、機会を逃さない</p></div>
+  <div class="c WT"><b>弱み × 脅威</b><p>大きな痛手を避ける。やらないことを決める</p></div>
+</div>
+<p class="cap">図7　4つの掛け合わせ。左上の「強み × 機会」から考えます。</p>
+
+<h3>やり方</h3>
+<ol class="steps">
+  <li><b>SWOTの紙から、強みを一つ、機会を一つ選ぶ</b></li>
+  <li><b>次の形の文にする</b>「（強み）を使って、（機会）に対して、◯◯をする」。◯◯が行動の案です。</li>
+  <li><b>残りの3つの組み合わせも、同じように文にする</b></li>
+  <li><b>出た案から、最初にやる一つを選ぶ</b>選ぶ目安は「強み × 機会」の案で、今月のうちに小さく始められて、1年続けても苦にならなそうなもの。人に声をかける前に、5章の最後「始める前に確かめておくこと」を先に読みます。</li>
+  <li><b>選んだ一手について、期待を書いておく</b>ここでフィードバック分析（未来に使う方）に戻ります。</li>
+</ol>
+
+<h3>記入例（Aさん）</h3>
+<div class="swot ex">
+  <div class="corner"></div><div class="h">O　機会</div><div class="h">T　脅威</div>
+  <div class="h side">S 強み</div>
+  <div class="c SO"><b>強み × 機会</b><p>手順を文書にする力を使って、記録づくりに困っている小さな食品の店の、衛生管理の手順書づくりを手伝う</p></div>
+  <div class="c ST"><b>強み × 脅威</b><p>下書きはAIに任せ、「現場で迷う場所の洗い出し」を自分の仕事にする。現場を知らないと出せない部分で違いを出す</p></div>
+  <div class="h side">W 弱み</div>
+  <div class="c WO"><b>弱み × 機会</b><p>営業の経験がないので、商工会の知り合いに1軒紹介してもらう。説明は、先に文書を渡してから短く行う</p></div>
+  <div class="c WT"><b>弱み × 脅威</b><p>講演やセミナーなど、話す力で専門家と競う場には出ない</p></div>
+</div>
+
+<div class="box">
+  <h4>Aさんが選んだ最初の一手と、書いておく期待</h4>
+  <table>
+    <tr><th>決めたこと</th><td>商工会の知り合いに、困っている店を1軒紹介してもらい、手順書を1つ作る</td></tr>
+    <tr><th>期待</th><td>3か月のうちに1軒で作り終え、そこから次の紹介が1件出る</td></tr>
+    <tr><th>書いた日</th><td>（今日の日付）</td></tr>
+    <tr><th>見直す日</th><td>（9〜12か月後の日付を手帳に入れる）</td></tr>
+  </table>
+  <p>見直す日に結果と比べれば、「手順を文書にする力」が勤め先の外でも通じるのかどうかが、記録で分かります。これが、棚卸しの次の材料になります。</p>
+</div>
+
+<div class="tool" id="tool">
+  <h4>掛け合わせの文を作ってみる</h4>
+  <p class="cap print-only">クロスSWOT 掛け合わせシート　／　「◯◯」の部分を考えて、書き込みます。</p>
+  <p class="cap screen-only">4つの欄にひとつずつ言葉を入れると、下に4通りの文の形が出ます。「◯◯」の部分を考えて、紙に書き写してください。入力した内容はこのパソコン・スマートフォンの中だけに残り、外には送られません。勤め先や共用のパソコンでは、終わったら「入力を消す」を押してください。</p>
+  <label for="iS">S　強み</label><input id="iS" type="text" placeholder="例：手順を文書にできること">
+  <label for="iW">W　弱み</label><input id="iW" type="text" placeholder="例：営業の経験がないこと">
+  <label for="iO">O　機会</label><input id="iO" type="text" placeholder="例：記録づくりに困っている店があること">
+  <label for="iT">T　脅威</label><input id="iT" type="text" placeholder="例：下書きがAIで作れるようになったこと">
+  <div class="out">
+    <div class="SO"><b>強み × 機会</b><span id="oSO"></span></div>
+    <div class="ST"><b>強み × 脅威</b><span id="oST"></span></div>
+    <div class="WO"><b>弱み × 機会</b><span id="oWO"></span></div>
+    <div class="WT"><b>弱み × 脅威</b><span id="oWT"></span></div>
+  </div>
+  <div class="btns"><button type="button" id="clr">入力を消す</button><button type="button" id="prt">この欄を印刷する（A4 1枚）</button><button type="button" id="img">画像で保存する</button></div>
+  <p class="cap print-only" style="text-align:right;margin-top:6mm">制作：上村コーチ　© 2026 Kei UEMURA　無断での複製・転載を禁じます</p>
+</div>
+
+<!-- ============ 5 小さな計画 ============ -->
+<h2 id="s5"><span class="num">5</span>小さな計画にする ―― 誰に・何を・いくらで</h2>
+
+<h3>考え方</h3>
+<p>事業計画というと、厚い書類を思い浮かべるかもしれません。勤めを続けながら収入の柱をもう一本持つ、という段階で要るのは、もっと小さなものです。クロスSWOTで選んだ一手を、<strong>4つの問いに答える形</strong>に置き直します。</p>
+
+<div class="asks four">
+  <div><b>誰の</b><span>どんな立場の、どんな人か。顔が浮かぶ一人まで絞る</span></div>
+  <div><b>どんな困りごとを</b><span>その人が、いま手が回っていないこと。いまはどうやってしのいでいるか（お金や時間をかけているか）</span></div>
+  <div><b>何をして解くか</b><span>自分の強みを使って、何を渡すのか</span></div>
+  <div><b>いくらで</b><span>1回（1件）あたり、いくらいただくか</span></div>
+</div>
+<p>4つがそろうと、一つの文になります。</p>
+<div class="box">
+  <p>「<strong>（誰）</strong>の<strong>（困りごと）</strong>を、<strong>（自分の強み）</strong>で解き、1件<strong>（いくら）</strong>いただく」</p>
+  <p>Aさんの例：「記録づくりに手が回らない小さな食品の店の、衛生管理の手順書づくりを、迷う場所を先回りして文書にする力で引き受け、1件5万円いただく」</p>
+  <p>Bさんの例：「引き継ぎに手が回らない小さな事務所や教室の、仕事の引き継ぎメモづくりを、次の人が迷うところを先に書いておく力で引き受け、1件（いくら）いただく」</p>
+  <p>「困っている」と「お金を払ってでも頼みたい」は別です。相手がいまお金や時間をかけてしのいでいるなら、頼んでもらえる見込みがあります。</p>
+</div>
+<p class="cap">金額は説明のために置いた架空の数字です。実際の値段は、相手にとっての価値と、同じ困りごとを解く他の方法の値段を見て決めます。決めにくいときは、はじめは仮の数字で構いません。件数と時間を先に見て、値段はあとで見直します。</p>
+
+<h3>目標の金額を、件数と時間に置き直す</h3>
+<p>「月に10万円」という数字は、そのままではやれるかどうかを判断できません。<strong>件数と時間</strong>に直すと、判断できる形になります。勤めのある人にとって、いちばん先に足りなくなるのは時間です。時間から確かめます。</p>
+
+<div class="formula">
+  <span class="goal">手元に残る額</span><i>＝</i><span>1件の値段</span><i>×</i><span>件数</span><i>−</i><span>かかる費用</span>
+</div>
+<p class="cap">図8　目標は「手元に残る額」で考えます。売上から、交通費・通信費・道具代などの費用を引いた残りです。税金はここからさらに引かれます（額は人によって違います）。</p>
+
+<div class="tool" id="calc">
+  <h4>件数と時間に直してみる</h4>
+  <p class="cap">数字を入れ替えると、下の結果が変わります。はじめに入っているのはAさんの例（架空の数字）です。目標の額は、ブレインダンプの☆（これからのこと）を見て決めます。かかる時間は作業の分で、お客さんを見つけるために話をする時間は入っていません（次の欄で足して見ます）。</p>
+  <div class="calcin">
+    <div><label for="cG">月に手元に残したい額（円・費用は引いたあと、税金は引く前）</label><input id="cG" type="number" inputmode="numeric" min="0" step="1000" value="100000"></div>
+    <div><label for="cP">1件の値段（円）</label><input id="cP" type="number" inputmode="numeric" min="0" step="1000" value="50000"></div>
+    <div><label for="cC">月にかかる費用（円）</label><input id="cC" type="number" inputmode="numeric" min="0" step="500" value="5000"></div>
+    <div><label for="cH">1件にかかる時間（時間）</label><input id="cH" type="number" inputmode="numeric" min="0" step="1" value="15"></div>
+    <div><label for="cAI">AIで減らせる時間の割合（全体のうち）<small>分からなければ0%のままで構いません</small></label>
+      <div class="rng"><input id="cAI" type="range" min="0" max="50" step="5" value="0"><output id="cAIO"></output></div></div>
+  </div>
+  <div class="result" id="cOut"></div>
+  <div class="btns"><button type="button" id="cImg">画像で保存する</button></div>
+</div>
+
+<p>Aさんの例では、月に3件、作業だけで週におよそ10時間が要ることになります。平日の夜と週末でその時間が取れるのか。取れないなら、値段を見直すのか、1件にかかる時間を短くするのか、目標の額を下げて始めるのか。<strong>数字に直すと、次に考えることが決まります。</strong>週に5時間ほどしか取れないなら、月1件から始める、という置き方もできます。</p>
+
+<h3>入口の商品と、続く契約を組み合わせる</h3>
+<p>ここまでは、1件ごとに終わる仕事（単発）で考えました。単発だけで組むと、毎月、新しいお客さんを同じ数だけ見つけ続けることになります。そこで、もう一つの組み方を持っておきます。<strong>入口の商品で一度手伝い、そのあと毎月決まった額で続けて手伝う</strong>形です。</p>
+
+<div class="two">
+  <div class="b">
+    <h4>入口の商品</h4>
+    <p>相手が頼みやすい大きさの、一度で終わる仕事です。相手はこちらの仕事ぶりを確かめられ、こちらは相手の困りごとを詳しく知ることができます。</p>
+    <p class="cap">Aさんの例：範囲を絞った手順書を1つ作る（3万円。頼みやすいよう、単発の5万円より小さくしています）</p>
+  </div>
+  <div class="a">
+    <h4>続く契約</h4>
+    <p>毎月決まった額で、続けて手伝う約束です。顧問契約や、月々の点検・手直しなどがこれにあたります。</p>
+    <p class="cap">Aさんの例：月に1回、記録の点検と手順書の手直し（月2万円）</p>
+  </div>
+</div>
+
+<p>続く契約は、積み上がります。先月からのお客さんが今月も残り、そこに新しいお客さんが加わるからです。同じ「月に1人の新しいお客さん」でも、数か月たつと手元に残る額が変わってきます。一方で、<strong>お客さんの数だけ、毎月の対応時間も積み上がります</strong>。お金と時間の両方を、一緒に見ます。</p>
+<p>続く契約にも終わりがあります。新しいお客さんを取るのをやめると、続く期間が過ぎたあとに元へ戻ります。単発だけの場合より少ない数で済みますが、<strong>見つけ続けることは変わりません</strong>。</p>
+
+<div class="tool" id="sub">
+  <h4>入口＋続く契約の積み上がりを見る</h4>
+  <p><strong>自分で入れるのは、すぐ下の「手元に残したい額」と「使える時間」の2つです。</strong>入れたら、その下の型のボタンを押して、グラフを見比べます。目標の額を変えたときは、もう一度ボタンを押します（その目標に要る件数が入り直ります）。</p>
+  <p>割合や期間は、始める前には分かりません。実績が出るまでは、ボタンで入った数字（架空の数字）のまま置いておき、最初の数件が終わったら自分の実績に入れ替えます。グラフの月数は、毎月この数を取れるようになってからのものです。最初の1件が出るまでの期間は入っていません（Aさんの例では3か月を見ています）。</p>
+
+  <div class="grp g"><b>目標と、使える時間</b>
+    <div class="calcin">
+      <div><label for="gG">月に手元に残したい額（円・費用は引いたあと、税金は引く前）</label><input id="gG" type="number" inputmode="numeric" min="0" step="1000" value="100000"></div>
+      <div><label for="gA">この仕事に使える時間（月・時間）</label><input id="gA" type="number" inputmode="numeric" min="1" step="1" value="40"></div>
+      <div><label for="gC">月にかかる費用（円）</label><input id="gC" type="number" inputmode="numeric" min="0" step="500" value="5000"></div>
+      <div><label for="ai">AIで減らせる時間の割合（作業と対応の時間のうち）<small>分からなければ0%のままで構いません</small></label>
+        <div class="rng"><input id="ai" type="range" min="0" max="50" step="5" value="0"><output id="aiO"></output></div></div>
+    </div>
+  </div>
+
+  <div class="presets">
+    <button type="button" data-p="low">値段を抑えて数を取る型</button>
+    <button type="button" data-p="mid">中ほどの型（Aさんの例）</button>
+    <button type="button" data-p="high">値段を上げて少数に絞る型</button>
+  </div>
+  <p class="cap">ボタンを押すと、下の「入口の商品」と「続く契約」の欄がその型の数字に置き換わります。件数は平均の見込みなので小数で出ます（0.5件は「2か月に1件」の意味です）。移動、見積もりや請求の事務の時間は入っていません。</p>
+
+  <div class="grp e"><b>入口の商品</b>
+    <div class="calcin">
+      <div><label for="eP">1件の値段（円）</label><input id="eP" type="number" inputmode="numeric" min="0" step="1000"></div>
+      <div><label for="eN">月に取る新しいお客さんの数（件）</label><input id="eN" type="number" inputmode="decimal" min="0" step="0.1"></div>
+      <div><label for="eR">話をした人のうち、頼んでくれる割合（%）</label><input id="eR" type="number" inputmode="numeric" min="1" max="100" step="5"></div>
+      <div><label for="eH">1件にかかる時間（時間）</label><input id="eH" type="number" inputmode="decimal" min="0" step="1"></div>
+      <div><label for="tH">1人と話すのにかかる時間（時間）</label><input id="tH" type="number" inputmode="decimal" min="0" step="0.5" value="1.5"></div>
+    </div>
+  </div>
+  <div class="grp s"><b>続く契約</b>
+    <div class="calcin">
+      <div><label for="sR">入口のあと、続く契約に進む割合（%）</label><input id="sR" type="number" inputmode="numeric" min="0" max="100" step="5"></div>
+      <div><label for="sP">月々の額（円）</label><input id="sP" type="number" inputmode="numeric" min="0" step="1000"></div>
+      <div><label for="sL">続く期間の見込み（か月）</label><input id="sL" type="number" inputmode="numeric" min="1" max="36" step="1"></div>
+      <div><label for="sH">1社あたり、月の対応時間（時間）</label><input id="sH" type="number" inputmode="numeric" min="0" step="1"></div>
+    </div>
+  </div>
+
+  <div class="chart"><h5>お金：毎月の売上の積み上がり（18か月）</h5>
+    <div class="legend"><span><i style="background:#b85a32"></i>入口の商品</span><span><i style="background:#1f3a5f"></i>続く契約</span><span>- - - 目標に届く線（目標＋費用）</span></div>
+    <div id="ch1"></div></div>
+  <div class="chart"><h5>時間：毎月かかる時間の積み上がり（18か月）</h5>
+    <div class="legend"><span><i style="background:#3d7a5a"></i>使える時間に収まる月</span><span><i style="background:#b85a32"></i>使える時間を超える月</span><span>- - - 使える時間</span></div>
+    <div id="ch2"></div></div>
+
+  <div class="result" id="subOut"></div>
+  <div id="subMsg"></div>
+
+  <div class="chart"><h5>どこを伸ばすと、どう変わるか</h5>
+    <p class="cap">いまの数字から一つだけ動かしたとき、落ち着いた時点で手元に残る額がいくら増えるかを、棒の長さで比べます。増える時間も添えています。値段を上げる2つは時間が増えませんが、実際には頼んでくれる割合や続く期間が下がることがあります。</p>
+    <div class="sens" id="sens"></div>
+    <p class="cap">自分の実績が出てから値段を動かすときは、上の欄でその割合や期間も一緒に動かして確かめます。件数を増やす・続く割合や期間を伸ばすものは、時間も一緒に増えます。</p></div>
+  <div class="btns"><button type="button" id="sImg">画像で保存する</button></div>
+</div>
+
+<h3>値段を動かすと、一緒に動くもの</h3>
+<p>値段を下げて数を増やせばよい、あるいは値段を上げれば楽になる、という話にはなりません。値段を動かすと、<strong>買ってもらいやすさ・続けてもらいやすさ・こちらに要る力・かかる時間</strong>が一緒に動くからです。</p>
+
+<div class="two">
+  <div class="a">
+    <h4>値段を抑える側</h4>
+    <ul>
+      <li>頼んでもらいやすく、続けてもらいやすい</li>
+      <li>目標に届くには、お客さんの数が要る</li>
+      <li>数を集めるために、<strong>知ってもらう力（広報）</strong>と、誰が頼んでも同じ質で渡せる<strong>商品の形</strong>が要る</li>
+      <li>お客さんの数だけ、連絡や対応の時間が増える</li>
+    </ul>
+  </div>
+  <div class="b">
+    <h4>値段を上げる側</h4>
+    <ul>
+      <li>少ない件数で目標に届き、一社に時間をかけられる</li>
+      <li>値段に見合う中身（<strong>商品の力</strong>）が要る</li>
+      <li>価値を説明して決めてもらう力（<strong>営業の力</strong>）が要り、頼んでくれる割合は下がることがある</li>
+      <li>相手の見る目も厳しくなり、続く期間が短くなることがある（相手と商品によっては逆もあります）</li>
+    </ul>
+  </div>
+</div>
+
+<p>下は、同じ目標額に届かせるときの3つの型の比べです。見るところは、<strong>毎月その人数と話し続けられるか</strong>と、<strong>その数のお客さんを抱えられるか</strong>の2つです。</p>
+<div class="cmp" id="cmp"></div>
+<p class="cap">図9　同じ目標でも、型によって「話をする人数」と「抱えるお客さんの数」が違います。上の欄の目標・費用・使える時間・AIの割合に合わせて変わります。型ごとの値段や割合は、傾向を見るために置いた架空の数字です。</p>
+
+<div class="box kaki">
+  <h4>話せる相手を、名前で数える</h4>
+  <p>いま声をかけられる相手を、名前で書き出します。次に、その人から紹介してもらえそうな数を足します。それが図9の「毎月、話をする人数」の何か月分にあたるかを見ます。3か月分に届かないときは、話をする人数が少なくて済む組み方に替えるか、紹介のもとになる場所（集まりや知り合い）を一つ増やすことを、先に考えます。</p>
+</div>
+
+<p>どの型が正しい、ということはありません。SWOTの紙に戻り、<strong>自分の強みと弱み、使える時間に合う側</strong>から始めます。Aさんは人前で話して伝えることが得意ではないので、説明の力に頼る「値段を上げる側」より、文書を先に渡して確かめてもらえる「中ほど」から始める、という選び方になります。</p>
+
+<div class="box green">
+  <h4>AIで短くできる時間と、短くならない時間</h4>
+  <p>文書の下書き、記録の整理、決まった形の連絡は、AIに任せて短くできる見込みがあります。相手の話を聞く時間、現場を見る時間、信頼してもらうまでの時間は、短くなりません。上の欄の「AIで減らせる時間の割合」には、作業と対応の時間のうち何%減らせそうかを入れます（話をする時間は減らない前提で計算しています）。目安は「任せられる作業が占める割合 × その作業が短くなる度合い」です（例：下書きが作業と対応の時間の4割を占め、それが半分になるなら20%）。半分を超える短縮を前提にしないと収まらない計画は、件数か値段の組み方を見直す目安になります。</p>
+</div>
+
+<h3>小さく試し、続けるか見直すかを先に決めておく</h3>
+<p>最初の1件で確かめたいのは、金額よりも次の3つです。</p>
+<ul>
+  <li>頼んでくれる人が、実際にいたか</li>
+  <li>渡したものを、相手は喜んだか。次も頼みたいと言ったか</li>
+  <li>実際には何時間かかったか</li>
+</ul>
+<p>そして、始める前に<strong>「いつまでに、何が起きたら続けるか。何が起きなかったら見直すか」</strong>を書いておきます。始めたあとでは、かけた手間が惜しくなり、落ち着いて決めにくくなるからです。これは2章のフィードバック分析（未来に使う方）と同じ作業です。期待を先に書き、あとで結果と比べます。</p>
+<table>
+  <tr><th>いつまでに</th><td>3か月後の月末までに</td></tr>
+  <tr><th>続ける目安</th><td>1軒で作り終え、「次も頼みたい」か紹介が1件出る</td></tr>
+  <tr><th>見直す目安</th><td>紹介を頼んでも、話を聞いてくれる店が1軒も出ない</td></tr>
+  <tr><th>見直すときに戻る場所</th><td>クロスSWOTの紙。別の「強み × 機会」の案を選び直す</td></tr>
+</table>
+<p class="cap">Aさんの例。見直すことは失敗ではなく、棚卸しの紙に戻って別の案を選ぶことです。</p>
+<p>見る時期は2つあります。3か月後に見るのは、続けるか、別の案に替えるか。9〜12か月後に見るのは、強みの見立てが合っていたかどうかです。</p>
+
+<div class="box gold">
+  <h4>始める前に確かめておくこと</h4>
+  <ul>
+    <li><strong>勤め先の決まり</strong>：副業の扱いは勤め先ごとに違います（公務員は法律で制限があります）。就業規則を読み、届け出や許可が要るか、同じ業種の仕事をしてよいかを確かめます。勤め先で作った資料、お客さんの情報、社内のやり方を、そのまま外で使うことはしません。</li>
+    <li><strong>税金の手続き</strong>：勤め先の給与のほかに収入があると、所得税の申告や、住民税（お住まいの市区町村）の申告が要る場合があります。住民税の通知を通じて、勤め先に副業の収入が伝わることもあります。条件は人によって違うため、税務署・市区町村の窓口や税理士に確かめます。</li>
+    <li><strong>使える時間</strong>：一週間のうち、無理なく使える時間を曜日ごとに書き出します。睡眠と家族の時間を削る計画は、長く続きません。</li>
+  </ul>
+</div>
+
+<!-- ============ 6 進め方 ============ -->
+<h2 id="s6"><span class="num">6</span>全体の進め方</h2>
+<p>一日で全部をやる必要はありません。間に一晩おくと、思い出すことが増えます。下の時間は進める際の目安です。</p>
+<table>
+  <tr><th>1日目（15分）</th><td>ブレインダンプ。6つの問いに沿って書き出す</td></tr>
+  <tr><th>2日目（20分）</th><td>書き足して、◯△☆の印をつける</td></tr>
+  <tr><th>3日目（40分）</th><td>◯の出来事から3つ選び、過去のふり返り（期待と結果の比較）をする。手帳や書類で確かめる</td></tr>
+  <tr><th>4日目（30分）</th><td>SWOTの4つの箱を埋める</td></tr>
+  <tr><th>5日目（30分）</th><td>クロスSWOTで案を出し、最初の一手を選ぶ。期待と見直す日を書く</td></tr>
+  <tr><th>6日目（30分）</th><td>選んだ一手を「誰に・何を・いくらで」の文にし、件数と時間に直す</td></tr>
+  <tr><th>7日目（30分）</th><td>入口の商品と続く契約の組み方を、3つの型で見比べる。続ける目安・見直す目安を書く</td></tr>
+  <tr><th>別に時間を取る</th><td>人に声をかける前に、勤め先の決まりと税金の手続きを確かめる（5章の最後）</td></tr>
+  <tr><th>9〜12か月後</th><td>結果と比べる。SWOTの紙を直す</td></tr>
+</table>
+
+<h3>手が止まったとき</h3>
+<details><summary>ブレインダンプで、書くことが出てこない</summary>
+<p>年代で区切るほかに、「場所」で区切る方法があります。勤めた職場、住んだ町、通った集まりを一つずつ思い浮かべ、そこでやっていたことを書きます。古い手帳や写真を横に置くと、続きが出てきます。</p></details>
+<details><summary>強みと呼べるものが見つからない</summary>
+<p>1章の「自分には強みがないと感じるとき」を見直します。それでも出てこないときは、身近な人に「自分に何を頼みたいか」を尋ねます。</p></details>
+<details><summary>強みと弱みが分かったあと、どうするか（ドラッカーが挙げた行動の要約）</summary>
+<ul>
+  <li>強みが生きる場所に、力を集める。</li>
+  <li>強みを、さらに伸ばす。</li>
+  <li>自分の専門の外のことを軽く見る癖があれば、改める。成果を妨げている習慣を直す。</li>
+  <li>不得意なことを人並みにするために、多くの時間を使わない。向いていない分野の仕事は引き受けない。</li>
+</ul></details>
+<details><summary>弱みばかりが出てくる</summary>
+<p>弱みは書いて構いません。大事なのは、ドラッカーが述べたとおり、不得意なことを人並みにするために多くの時間を使わないことです。弱みは「直すもの」としてではなく、「避ける・人に頼む・別のやり方にする」ものとして、クロスSWOTの下の段で扱います。</p></details>
+<details><summary>機会に何を書けばよいか分からない</summary>
+<p>大きな社会の動きを書こうとすると、手が止まります。身の回りで聞いた「困っている」という声をそのまま書いてください。誰かの困りごとは、それを解ける人にとっての機会です。聞いた覚えがなければ、知り合い3人に「最近、仕事で手が回っていないことは何か」を尋ねるところから始められます。</p></details>
+
+<p class="src">
+出典：フィードバック分析は、P.F.ドラッカーの論文 “Managing Oneself”（Harvard Business Review、1999年初出・2005年再掲載）による。期待を書き留め、9〜12か月後に結果と照らす方法として述べられている。本書で「過去に使う」としたふり返りは、この方法を過去の出来事に当てはめた応用であり、ドラッカーが述べた手順そのものではない。<br>
+Aさん・Bさんは説明のために作った架空の人物で、実在の人物・事業者とは関係がない。計算欄に入っている金額・割合・時間はすべて説明のための架空の数字で、収入を約束するものではない。計算欄の「手元に残る額」は、税金を引く前の額である。<br>
+第2版
+</p>
+<div class="foot">
+  <p class="notice">許可なく複製・転載・転記・配布・公開することを禁じます。</p>
+  <p class="copy">制作：上村コーチ　／　© 2026 Kei UEMURA</p>
+</div>
+</div>
+
+<button type="button" id="top" aria-label="ページの先頭へ戻る">▲</button>
+
+<script>
+(function(){
+  var ids=['S','W','O','T'], KEY='tanaoroshi_cross_v1';
+  var ph={S:'（強み）',W:'（弱み）',O:'（機会）',T:'（脅威）'};
+  function esc(s){return s.replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function v(k){var t=document.getElementById('i'+k).value.trim();return '<u>'+(t?esc(t):ph[k])+'</u>'}
+  function render(){
+    document.getElementById('oSO').innerHTML=v('S')+' を使って、'+v('O')+' に対して、◯◯をする。';
+    document.getElementById('oST').innerHTML=v('S')+' を使って、'+v('T')+' に対して、◯◯で違いを出す。';
+    document.getElementById('oWO').innerHTML=v('W')+' を◯◯で補って、'+v('O')+' を逃さない。';
+    document.getElementById('oWT').innerHTML=v('W')+' と '+v('T')+' が重なる場面では、◯◯をしない。';
+    try{var d={};ids.forEach(function(k){d[k]=document.getElementById('i'+k).value});localStorage.setItem(KEY,JSON.stringify(d))}catch(e){}
+  }
+  try{var d=JSON.parse(localStorage.getItem(KEY)||'{}');ids.forEach(function(k){if(d[k])document.getElementById('i'+k).value=d[k]})}catch(e){}
+  ids.forEach(function(k){document.getElementById('i'+k).addEventListener('input',render)});
+  document.getElementById('clr').addEventListener('click',function(){ids.forEach(function(k){document.getElementById('i'+k).value=''});render()});
+  // この欄だけをA4 1枚に印刷する
+  document.getElementById('prt').addEventListener('click',function(){document.body.classList.add('print-tool');window.print()});
+  window.addEventListener('afterprint',function(){document.body.classList.remove('print-tool')});
+  document.getElementById('top').addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+  render();
+
+  // 画像（PNG・A4の縦横比）で保存する
+  function wrap(ctx,text,maxW){var lines=[],cur='';for(var i=0;i<text.length;i++){var t=cur+text[i];
+    if(ctx.measureText(t).width>maxW&&cur){lines.push(cur);cur=text[i]}else cur=t}if(cur)lines.push(cur);return lines}
+  document.getElementById('img').addEventListener('click',function(){
+    var W=1240,H=1754,M=80,F='"Yu Gothic UI","Hiragino Sans","Meiryo",sans-serif';
+    var c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d');
+    x.fillStyle='#fff';x.fillRect(0,0,W,H);x.textBaseline='top';
+    x.fillStyle='#1f3a5f';x.font='bold 46px '+F;x.fillText('クロスSWOT　掛け合わせシート',M,M);
+    var d=new Date();x.fillStyle='#5d5a55';x.font='24px '+F;
+    x.fillText('書いた日：'+d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日',M,M+70);
+    var y=M+140,names={S:'S　強み',W:'W　弱み',O:'O　機会',T:'T　脅威'};
+    ids.forEach(function(k){
+      x.fillStyle='#5d5a55';x.font='bold 24px '+F;x.fillText(names[k],M,y);y+=36;
+      x.fillStyle='#2b2a28';x.font='30px '+F;
+      var ls=wrap(x,document.getElementById('i'+k).value.trim()||'（未記入）',W-M*2);
+      ls.forEach(function(l){x.fillText(l,M,y);y+=44});
+      x.strokeStyle='#b9ae99';x.lineWidth=2;x.beginPath();x.moveTo(M,y+4);x.lineTo(W-M,y+4);x.stroke();y+=28;
+    });
+    y+=16;
+    var cells=[['強み × 機会','oSO','#e8f1ec'],['強み × 脅威','oST','#e9eef5'],['弱み × 機会','oWO','#f6efdc'],['弱み × 脅威','oWT','#f1e8ef']];
+    var gap=20,bw=(W-M*2-gap)/2,bh=Math.min(400,(H-y-M-60-gap)/2);
+    cells.forEach(function(cell,i){
+      var bx=M+(i%2)*(bw+gap),by=y+Math.floor(i/2)*(bh+gap);
+      x.fillStyle=cell[2];x.fillRect(bx,by,bw,bh);x.strokeStyle='#d9d2c5';x.strokeRect(bx,by,bw,bh);
+      x.fillStyle='#5d5a55';x.font='bold 24px '+F;x.fillText(cell[0],bx+24,by+22);
+      x.fillStyle='#2b2a28';x.font='28px '+F;var ty=by+68;
+      wrap(x,document.getElementById(cell[1]).textContent,bw-48).forEach(function(l){if(ty<by+bh-40){x.fillText(l,bx+24,ty);ty+=44}});
+    });
+    x.fillStyle='#5d5a55';x.font='22px '+F;x.fillText('「◯◯」の部分を考えて、書き込みます。',M,H-M-10);
+    x.textAlign='right';x.fillText('制作：上村コーチ　© 2026 Kei UEMURA　無断での複製・転載を禁じます',W-M,H-M+24);x.textAlign='left';
+    c.toBlob(function(b){var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='クロスSWOT_掛け合わせシート.png';
+      document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href)},2000)},'image/png');
+  });
+
+  // 件数と時間に直す
+  var cIds=['cG','cP','cC','cH'];
+  function num(id){var n=parseFloat(document.getElementById(id).value);return isFinite(n)&&n>0?n:0}
+  function yen(n){return Math.round(n).toLocaleString('ja-JP')+'円'}
+  function calc(){
+    var g=num('cG'),p=num('cP'),co=num('cC'),h=num('cH'),o=document.getElementById('cOut');
+    var ai=Math.min(num('cAI'),50);document.getElementById('cAIO').textContent=ai+'%';
+    if(!p){o.textContent='「1件の値段」を入れると、件数が出ます。';return}
+    var n=Math.ceil((g+co)/p),left=n*p-co,raw=Math.round(n*h*10)/10,mh=Math.round(raw*(1-ai/100)*10)/10,wk=Math.round(mh/4.345*10)/10;
+    o.innerHTML='必要な件数：月に <b>'+n+'件</b>（そのとき手元に残る額は '+yen(left)+'）<br>'+
+      (n>1?'1件少ない '+(n-1)+'件のときは、手元に残る額は '+yen((n-1)*p-co)+'<br>':'')+
+      (h?'かかる時間：月に <b>'+mh+'時間</b>、週におよそ <b>'+wk+'時間</b>'+(ai?'<br>（AIで短くする前は、月に '+raw+'時間）':'')+(wk>20?'<br>勤めを続けながら取るには多い時間です。値段か、目標の額を見直します。':''):'「1件にかかる時間」を入れると、時間が出ます。');
+  }
+  cIds.push('cAI');
+  cIds.forEach(function(id){document.getElementById(id).addEventListener('input',calc)});
+  calc();
+
+  // 計算欄を画像で保存する（共通の部品）
+  var F2='"Yu Gothic UI","Hiragino Sans","Meiryo",sans-serif',M2=80,lastSens=[],lastMax=1;
+  function mk(W,H,title){var c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d');
+    x.fillStyle='#fff';x.fillRect(0,0,W,H);x.textBaseline='top';x.fillStyle='#1f3a5f';x.font='bold 44px '+F2;x.fillText(title,M2,M2);
+    var d=new Date();x.fillStyle='#5d5a55';x.font='22px '+F2;x.fillText('作成日：'+d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日　／　数字は試算のための仮の値です',M2,M2+64);
+    x.textAlign='right';x.fillText('制作：上村コーチ　© 2026 Kei UEMURA　無断での複製・転載を禁じます',W-M2,H-M2+14);x.textAlign='left';return {c:c,x:x}}
+  function lab(id){return document.querySelector('label[for="'+id+'"]').firstChild.textContent.trim().replace(/（円・.*?）/,'（円）')}
+  function pairs(x,list,y,W){var cw=(W-M2*2)/2;list.forEach(function(id,i){var cx=M2+(i%2)*cw,cy=y+Math.floor(i/2)*58;
+      x.fillStyle='#5d5a55';x.font='20px '+F2;x.fillText(lab(id),cx,cy);
+      x.fillStyle='#2b2a28';x.font='bold 28px '+F2;var v=document.getElementById(id);
+      x.fillText(v.type==='range'?v.value+'%':Number(v.value||0).toLocaleString('ja-JP'),cx,cy+26)});
+    return y+Math.ceil(list.length/2)*58+14}
+  function block(x,text,y,W,bg,bd){x.font='26px '+F2;var ls=[];text.split('\n').forEach(function(t){if(t.trim())ls=ls.concat(wrap(x,t.trim(),W-M2*2-48))});
+    var h=ls.length*42+36;x.fillStyle=bg;x.fillRect(M2,y,W-M2*2,h);x.strokeStyle=bd;x.lineWidth=2;x.strokeRect(M2,y,W-M2*2,h);
+    x.fillStyle='#2b2a28';ls.forEach(function(l,i){x.fillText(l,M2+24,y+20+i*42)});return y+h+20}
+  function dl(c,name){c.toBlob(function(b){var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;
+    document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href)},2000)},'image/png')}
+  function svgImg(id,cb){var s=document.querySelector('#'+id+' svg').cloneNode(true);s.setAttribute('xmlns','http://www.w3.org/2000/svg');
+    s.setAttribute('width','720');s.setAttribute('height','380');var im=new Image();im.onload=function(){cb(im)};im.onerror=function(){cb(null)};
+    im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(s))}
+  document.getElementById('cImg').addEventListener('click',function(){
+    var W=1240,o=mk(W,820,'件数と時間に直してみる'),x=o.x,y=M2+130;
+    y=pairs(x,['cG','cP','cC','cH','cAI'],y,W);
+    block(x,document.getElementById('cOut').innerText,y,W,'#f6efdc','#a57a1c');dl(o.c,'件数と時間の試算.png')});
+  document.getElementById('sImg').addEventListener('click',function(){
+    var W=1240,H=1754,o=mk(W,H,'入口＋続く契約の積み上がり'),x=o.x,y=M2+120;
+    y=pairs(x,['eP','eN','eR','eH','tH','sR','sP','sL','sH','gG','gC','gA','ai'],y,W);
+    svgImg('ch1',function(a){svgImg('ch2',function(b){
+      var cw=(W-M2*2-20)/2,ch=cw*190/360;x.fillStyle='#2b2a28';x.font='bold 22px '+F2;
+      x.fillText('お金：毎月の売上（18か月）',M2,y);x.fillText('時間：毎月かかる時間（18か月）',M2+cw+20,y);
+      if(a)x.drawImage(a,M2,y+30,cw,ch);if(b)x.drawImage(b,M2+cw+20,y+30,cw,ch);
+      x.fillStyle='#5d5a55';x.font='18px '+F2;x.fillText('下の色＝入口の商品／上の色＝続く契約／点線＝目標に届く線',M2,y+34+ch);
+      x.fillText('点線＝使える時間',M2+cw+20,y+34+ch);y+=ch+74;
+      y=block(x,document.getElementById('subOut').innerText,y,W,'#f6efdc','#a57a1c');
+      y=block(x,document.getElementById('subMsg').innerText,y,W,'#f4f1ea','#b9ae99');
+      x.fillStyle='#2b2a28';x.font='bold 22px '+F2;x.fillText('どこを伸ばすと、どう変わるか（一つだけ動かしたとき）',M2,y);y+=38;
+      lastSens.forEach(function(r){if(y>H-M2-30)return;x.fillStyle='#2b2a28';x.font='20px '+F2;x.fillText(r[0].replace(/（.*?）/,''),M2,y);
+        x.fillStyle='#3d7a5a';x.fillRect(M2+470,y+2,Math.max(2,r[1]/lastMax*220),18);
+        x.fillStyle='#5d5a55';x.font='18px '+F2;x.fillText('＋'+yen(r[1])+'／月・時間 ＋'+r1(r[2])+'時間',M2+710,y+1);y+=36});
+      dl(o.c,'入口と続く契約の試算.png')})})});
+
+  // 入口＋続く契約の積み上がり
+  var PRE={
+    low:{eP:10000,eR:40,eH:6,sR:60,sP:10000,sL:10,sH:3,name:'値段を抑えて数を取る型'},
+    mid:{eP:30000,eR:25,eH:10,sR:50,sP:20000,sL:8,sH:4,name:'中ほどの型'},
+    high:{eP:80000,eR:10,eH:20,sR:40,sP:50000,sL:5,sH:8,name:'値段を上げて少数に絞る型'}
+  };
+  var sIds=['eP','eN','eR','eH','tH','sR','sP','sL','sH','gG','gC','gA','ai'],MONTHS=18;
+  function r1(n){return Math.round(n*10)/10}
+  function man(v){return r1(v/10000)+'万'}
+  function steady(p){ // 落ち着いた時点（続く契約が入れ替わりながら一定になった状態）
+    var act=p.eN*p.sR/100*p.sL;
+    var work=p.eN*p.eH+act*p.sH,talk=p.eN/(p.eR/100)*p.tH; // 話をする時間はAIでは減らない
+    return {act:act,net:p.eN*p.eP+act*p.sP-p.gC,work:work,talk:talk,hrs:work*(1-p.ai/100)+talk};
+  }
+  function needN(p){var per=p.eP+p.sR/100*p.sL*p.sP;return per>0?(p.gG+p.gC)/per:0}
+  function nice(x){var pw=Math.pow(10,Math.floor(Math.log(x)/Math.LN10)),f=x/pw;return (f<1.5?1:f<3?2:f<7?5:10)*pw}
+  function chart(id,stacks,colors,lineV,fmt){
+    var sm=window.innerWidth<640,fs=sm?13:9.5; // スマホ幅では文字を大きくする
+    var W=360,H=sm?230:190,L=sm?58:46,R=6,T=14,B=sm?28:22,n=stacks[0].length,mx=lineV,i,k;
+    for(i=0;i<n;i++){var t=0;for(k=0;k<stacks.length;k++)t+=stacks[k][i];if(t>mx)mx=t}
+    mx=(mx||1)*1.12;var bw=(W-L-R)/n,ph=H-T-B,y=function(v){return T+ph-(v/mx)*ph};
+    var s='<svg viewBox="0 0 '+W+' '+H+'" role="img">',st=nice(mx/4);
+    for(var v=0;v<=mx;v+=st){s+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="#e6dfd0"/>'+
+      '<text x="'+(L-4)+'" y="'+(y(v)+3.5)+'" font-size="'+fs+'" text-anchor="end" fill="#5d5a55">'+fmt(v)+'</text>'}
+    for(i=0;i<n;i++){var base=0;for(k=0;k<stacks.length;k++){var val=stacks[k][i];if(val>0){
+        var c=typeof colors[k]==='function'?colors[k](i):colors[k];
+        s+='<rect x="'+(L+i*bw+1.5)+'" y="'+y(base+val)+'" width="'+(bw-3)+'" height="'+(y(base)-y(base+val))+'" fill="'+c+'"/>'}base+=val}
+      if(i===0||(i+1)%(sm?6:3)===0)s+='<text x="'+(L+i*bw+bw/2)+'" y="'+(H-7)+'" font-size="'+fs+'" text-anchor="middle" fill="#5d5a55">'+(i+1)+'</text>'}
+    s+='<text x="'+(W-R)+'" y="'+(H-7)+'" font-size="'+fs+'" text-anchor="end" fill="#5d5a55"></text>';
+    s+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(lineV)+'" y2="'+y(lineV)+'" stroke="#2b2a28" stroke-width="1.4" stroke-dasharray="5 3"/>';
+    document.getElementById(id).innerHTML=s+'</svg><div class="cap" style="text-align:right;margin:0">横の数字は「◯か月目」</div>';
+  }
+  function getP(){var p={};sIds.forEach(function(id){p[id]=num(id)});if(!p.sL)p.sL=1;if(!p.eR)p.eR=1;if(!p.gA)p.gA=1;
+    p.sR=Math.min(p.sR,100);p.eR=Math.min(p.eR,100);p.sL=Math.min(p.sL,36);p.ai=Math.min(p.ai,50);return p}
+  function sub(){
+    var p=getP(),a=1-p.ai/100,e=[],c=[],h=[],reach=0,m;
+    document.getElementById('aiO').textContent=p.ai+'%';
+    var talkM=p.eN/(p.eR/100)*p.tH,ppl=r1(p.eN/(p.eR/100));
+    for(m=1;m<=48;m++){var act=p.eN*p.sR/100*Math.min(m-1,p.sL),ev=p.eN*p.eP,cv=act*p.sP;
+      if(m<=MONTHS){e.push(ev);c.push(cv);h.push((p.eN*p.eH+act*p.sH)*a+talkM)}
+      if(!reach&&ev+cv-p.gC>=p.gG-0.5&&p.gG>0)reach=m} // 1円未満の誤差は届いたとみなす
+    chart('ch1',[e,c],['#b85a32','#1f3a5f'],p.gG+p.gC,man);
+    chart('ch2',[h],[function(i){return h[i]>p.gA?'#b85a32':'#3d7a5a'}],p.gA,function(v){return Math.round(v)+'時間'});
+    var s=steady(p),nn=needN(p),per=p.eP+p.sR/100*p.sL*p.sP,o='';
+    if(!p.eN){document.getElementById('subOut').textContent='「月に取る新しいお客さんの数」を入れると、結果が出ます。';
+      var m0=document.getElementById('subMsg');m0.className='';m0.innerHTML='';document.getElementById('sens').innerHTML='';lastSens=[];cmp(p);return}
+    o+='落ち着いた時点で手元に残る額：月に <b>'+yen(s.net)+'</b>（税金を引く前）、続く契約 <b>'+r1(s.act)+'社</b><br>';
+    o+='<span style="font-size:15px;color:#5d5a55">新しいお客さんをこの数で取り続けた場合。およそ'+(p.sL+1)+'か月目から</span><br>';
+    o+='そのために話をする人数：毎月 <b>'+ppl+'人</b>（'+p.eN+'件を取り続ける場合）<br>';
+    o+='かかる時間：月に <b>'+r1(s.hrs)+'時間</b>（うち話をする時間 '+r1(s.talk)+'時間／使える時間は '+p.gA+'時間）<br>';
+    o+=!p.gG?'目標の額を入れると、届く月が出ます<br>':reach?'目標に届くのは <b>'+reach+'か月目</b>'+(reach>MONTHS?'（グラフの外）':'')+'<br>':'いまの数字では、4年たっても目標に届きません<br>';
+    o+=!p.gG?'':per>0?'目標に届くのに要る新しいお客さん：月に <b>'+r1(nn)+'件</b>（いまの入力は '+p.eN+'件）':'値段を入れると、目標に届くのに要る件数が出ます';
+    document.getElementById('subOut').innerHTML=o;
+    var msg,warn=true;
+    if(s.hrs<=p.gA){warn=false;msg='かかる時間は、使える時間に収まっています。ただし、毎月 '+ppl+'人と話し続けることが前提です。その相手をどこで見つけるかを、先に考えます。'}
+    else{var need=(p.gA-s.talk>0&&s.work>0)?Math.ceil((1-(p.gA-s.talk)/s.work)*100):101;
+      msg=(s.talk>=p.gA||s.talk>s.work*(1-p.ai/100))?'かかる時間が、使える時間を超えています。そのうち話をする時間が <b>'+r1(s.talk)+'時間</b>を占めています。紹介など、頼んでくれる割合が高い相手に絞るか、新しいお客さんの数を減らして続く契約を厚くするかを考えます。'
+        :need<=50?'かかる時間が、使える時間を超えています。AIや手順の型で、時間を合わせて <b>'+need+'%</b>（いまの設定は '+p.ai+'%）減らせれば収まります。自分の仕事で、それだけ減らせるかを確かめます。'
+        :'かかる時間が、使える時間を大きく超えています。作業と対応の時間を半分より多く減らさないと収まらず、AIで短くできる範囲を超える見込みです。件数を減らして値段を見直すか、続く契約の対応時間を短くできる中身に変えるかを考える段階です。'}
+    var mEl=document.getElementById('subMsg');mEl.className='msg'+(warn?' warn':'');mEl.innerHTML=msg;
+    // どこを伸ばすと効くか
+    var lev=[['新しいお客さんを月に0.5件増やす','eN',0.5],['続く契約に進む割合を10上げる（例：50%→60%）','sR',10],['続く期間を2か月延ばす','sL',2],
+      ['月々の額を5,000円上げる','sP',5000],['入口の値段を5,000円上げる','eP',5000]],rows=[],mxD=1;
+    lev.forEach(function(l){var q={};for(var k in p)q[k]=p[k];q[l[1]]+=l[2];if(l[1]==='sR'&&q.sR>100)q.sR=100;
+      var t=steady(q);rows.push([l[0],t.net-s.net,t.hrs-s.hrs]);if(t.net-s.net>mxD)mxD=t.net-s.net});
+    lastSens=rows;lastMax=mxD;
+    document.getElementById('sens').innerHTML=rows.map(function(r){
+      return '<div><span>'+r[0]+'</span><span><span class="bar" style="width:'+Math.max(0,r[1]/mxD*100)+'%"></span><small>手元に残る額 ＋'+yen(r[1])+'／月　・　時間 ＋'+r1(r[2])+'時間／月</small></span></div>'}).join('');
+    cmp(p);
+  }
+  function cmp(p){ // 3つの型の比べ
+    document.getElementById('cmp').innerHTML=['low','mid','high'].map(function(k){
+      var q={};for(var j in PRE[k])q[j]=PRE[k][j];q.gG=p.gG;q.gC=p.gC;q.ai=p.ai;q.tH=p.tH;q.eN=Math.max(0.1,Math.ceil(needN(q)*10-1e-9)/10);var t=steady(q),pct=Math.min(100,t.hrs/p.gA*100);
+      return '<div><h5>'+PRE[k].name+'</h5><small>入口 '+yen(q.eP)+'／月々 '+yen(q.sP)+'</small>'+
+        '毎月、話をする人数 <b>'+r1(q.eN/(q.eR/100))+'人</b><br>抱えるお客さん <b>'+r1(t.act)+'社</b><br>月の時間 <b>'+r1(t.hrs)+'時間</b>'+
+        '<div class="hb"><i class="'+(t.hrs>p.gA?'over':'')+'" style="width:'+pct+'%"></i></div>'+
+        '<small>'+(t.hrs>p.gA?'使える時間（'+p.gA+'時間）を超えます':'使える時間（'+p.gA+'時間）に収まります')+'</small></div>'}).join('');
+  }
+  function preset(k){var q=PRE[k];['eP','eR','eH','sR','sP','sL','sH'].forEach(function(id){document.getElementById(id).value=q[id]});
+    var p=getP();document.getElementById('eN').value=Math.max(0.1,Math.ceil(needN(p)*10-1e-9)/10);sub()}
+  sIds.forEach(function(id){document.getElementById(id).addEventListener('input',sub)});
+  [].forEach.call(document.querySelectorAll('.presets button'),function(b){b.addEventListener('click',function(){preset(b.getAttribute('data-p'));
+    if(window.innerWidth<640)document.getElementById('ch1').scrollIntoView({behavior:'smooth',block:'center'})})}); // スマホではグラフまで送る
+  preset('mid');
+
+  // スクロールすると出る上部メニュー
+  var nav=document.getElementById('nav'),links=[].slice.call(nav.querySelectorAll('a'));
+  var secs=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1))});
+  function onScroll(){
+    nav.classList.toggle('show',window.scrollY>260);
+    var cur=0;secs.forEach(function(s,i){if(s.getBoundingClientRect().top<120)cur=i});
+    links.forEach(function(a,i){var on=i===cur;if(on&&!a.classList.contains('on')&&nav.scrollWidth>nav.clientWidth)nav.scrollLeft=a.offsetLeft-40;a.classList.toggle('on',on)});
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+})();
+</script>
+</body>
+</html>

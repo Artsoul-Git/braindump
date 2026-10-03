@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>自分の棚卸しガイド 別冊｜キーワードの色分けと、AIで見える化</title>
+<style>
+:root{
+  --ink:#2b2a28; --sub:#5d5a55; --bg:#faf7f1; --paper:#ffffff; --line:#d9d2c5;
+  --navy:#1f3a5f; --kaki:#b85a32; --green:#3d7a5a; --gold:#a57a1c; --plum:#7a4a6e;
+  --navy-bg:#e9eef5; --kaki-bg:#f8ebe4; --green-bg:#e8f1ec; --gold-bg:#f6efdc; --plum-bg:#f1e8ef;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Hiragino Sans","Yu Gothic UI","Yu Gothic","Meiryo",sans-serif;font-size:18px;line-height:1.95}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px 80px}
+header.cover{padding:56px 0 28px;border-bottom:3px double var(--line)}
+.kicker{color:var(--kaki);font-weight:700;letter-spacing:.12em;font-size:15px}
+h1{font-size:33px;line-height:1.45;margin:.3em 0 .4em;color:var(--navy)}
+.lead{font-size:19px;color:var(--sub);margin:0}
+.author{margin:14px 0 0;font-size:17px;font-weight:700}
+.notice{color:#b3261e;font-size:15px;line-height:1.7;margin:6px 0 0;font-weight:700}
+h2{font-size:26px;line-height:1.5;color:var(--navy);margin:72px 0 8px;padding-top:20px;border-top:1px solid var(--line);scroll-margin-top:64px}
+h2 .num{display:inline-block;min-width:44px;height:44px;line-height:44px;text-align:center;border-radius:50%;background:var(--navy);color:#fff;font-size:20px;margin-right:12px;vertical-align:middle}
+h3{font-size:21px;margin:40px 0 8px;border-left:6px solid var(--kaki);padding-left:12px;line-height:1.6}
+p{margin:.8em 0}
+strong{background:linear-gradient(transparent 62%,#f3ddb0 62%)}
+ul,ol{padding-left:1.5em;margin:.6em 0} li{margin:.35em 0}
+.cap{font-size:15px;color:var(--sub);line-height:1.7}
+.fig{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:20px 16px 12px;margin:24px 0;text-align:center}
+.fig svg{width:100%;max-width:520px;height:auto}
+figure{margin:0}
+.box{background:var(--paper);border:1px solid var(--line);border-left:6px solid var(--navy);padding:16px 20px;margin:20px 0;border-radius:4px}
+.box.kaki{border-left-color:var(--kaki)} .box.green{border-left-color:var(--green)} .box.gold{border-left-color:var(--gold)}
+.box h4{margin:0 0 4px;font-size:18px}
+.box p:last-child,.box ul:last-child,.box ol:last-child{margin-bottom:0}
+
+.map{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:24px 0}
+.map a{display:block;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-top:6px solid var(--navy);border-radius:4px;padding:12px 10px}
+.map a:nth-child(2){border-top-color:var(--kaki)} .map a:nth-child(3){border-top-color:var(--green)} .map a:nth-child(4){border-top-color:var(--gold)} .map a:nth-child(5){border-top-color:var(--plum)}
+.map b{display:block;font-size:16px;line-height:1.5} .map span{display:block;font-size:14px;color:var(--sub);line-height:1.6;margin-top:4px}
+.map em{font-style:normal;font-size:14px;font-weight:700;color:var(--kaki)}
+
+.asks{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:20px 0}
+.asks div{background:var(--paper);border:1px dashed #b9ae99;border-radius:4px;padding:12px 16px}
+.asks b{display:block;color:var(--navy)} .asks span{font-size:16px;color:var(--sub)}
+
+table{width:100%;border-collapse:collapse;background:var(--paper);margin:16px 0;font-size:17px}
+th,td{border:1px solid var(--line);padding:10px 14px;text-align:left;vertical-align:top;line-height:1.75}
+th{background:var(--navy-bg);font-weight:700}
+.swatch{display:inline-block;width:18px;height:18px;border-radius:50%;vertical-align:-3px;margin-right:6px;border:1px solid rgba(0,0,0,.15)}
+
+.quad{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}
+.quad div{border:1px solid var(--line);border-radius:4px;padding:14px 16px}
+.quad b{display:block;font-size:18px;line-height:1.5} .quad span{font-size:16px}
+.q1{background:var(--green-bg)} .q2{background:var(--gold-bg)} .q3{background:var(--navy-bg)} .q4{background:var(--plum-bg)}
+
+/* 手順（チェック式） */
+.step{background:var(--paper);border:1px solid var(--line);border-radius:6px;margin:18px 0;padding:18px 20px}
+.step .place{display:inline-block;font-size:14px;font-weight:700;background:var(--navy);color:#fff;border-radius:3px;padding:0 10px;line-height:1.9}
+.step h4{margin:8px 0 4px;font-size:20px;line-height:1.5}
+.step .ok{background:var(--green-bg);border-left:5px solid var(--green);padding:8px 14px;margin:12px 0;font-size:17px;border-radius:3px}
+.step details{margin:10px 0;border:1px solid var(--line);border-radius:4px;padding:0 14px;background:#fdfcf8}
+.step summary{cursor:pointer;font-weight:700;padding:10px 0;font-size:17px}
+.step label.done{display:flex;gap:10px;align-items:center;font-weight:700;margin-top:12px;padding:10px 14px;border:2px solid var(--kaki);border-radius:4px;cursor:pointer}
+.step label.done input{width:22px;height:22px}
+.prompt{position:relative;background:#23303f;color:#f3efe6;border-radius:4px;padding:16px 16px 14px;margin:12px 0;font-size:16px;line-height:1.8;white-space:pre-wrap;font-family:inherit}
+.copy{display:block;margin:-4px 0 14px;font:inherit;font-size:15px;padding:6px 16px;border-radius:4px;border:1px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer}
+.copy:hover{background:var(--navy-bg)}
+
+/* 道具 */
+.tool{background:var(--paper);border:2px solid var(--navy);border-radius:6px;padding:20px;margin:24px 0}
+.tool h4{margin:0 0 4px;font-size:20px;color:var(--navy)}
+#drop{border:3px dashed #a9a08e;border-radius:6px;padding:26px 16px;text-align:center;background:#fdfcf8;margin:14px 0;transition:.15s}
+#drop.over{border-color:var(--kaki);background:var(--kaki-bg)}
+#drop b{display:block;font-size:19px}
+textarea{width:100%;min-height:130px;font:inherit;font-size:15px;line-height:1.6;padding:10px;border:1px solid #a9a08e;border-radius:4px;background:#fffef9}
+.btns{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap}
+button.b{font:inherit;font-size:16px;padding:8px 18px;border-radius:4px;border:1px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer}
+button.b:hover{background:var(--navy-bg)} button.b.main{background:var(--navy);color:#fff}
+#stat{margin-top:12px;font-size:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:22px 0 0;border-bottom:2px solid var(--navy)}
+.tabs button{font:inherit;font-size:15px;padding:8px 14px;border:1px solid var(--line);border-bottom:none;border-radius:4px 4px 0 0;background:#f1ece1;color:var(--ink);cursor:pointer}
+.tabs button.on{background:var(--navy);color:#fff;border-color:var(--navy);font-weight:700}
+#view{padding:18px 0 0;min-height:120px}
+#view h5{margin:0 0 4px;font-size:19px;color:var(--navy)}
+#view svg{width:100%;height:auto;display:block;background:#fff;border:1px solid var(--line);border-radius:4px}
+.legend{font-size:14px;color:var(--sub);display:flex;gap:14px;flex-wrap:wrap;line-height:1.8;margin:6px 0}
+.legend i{display:inline-block;width:12px;height:12px;margin-right:5px;vertical-align:-1px;border-radius:2px}
+.cats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.cats>div{border:1px solid var(--line);border-top:6px solid var(--navy);border-radius:4px;padding:10px 14px;background:#fdfcf8}
+.cats h6{margin:0 0 6px;font-size:17px}
+.chip{display:inline-block;margin:3px 4px 3px 0;padding:1px 10px;border-radius:14px;font-size:15px;line-height:1.8;border:1px solid #c9c0ae;background:#fff}
+.chip.l1{background:var(--green-bg);border-color:var(--green)} .chip.l-1{background:var(--plum-bg);border-color:var(--plum)}
+.chip .m{font-size:12px;font-weight:700;margin-left:4px}
+.chip .m.s1{color:var(--navy)} .chip .m.s-1{color:var(--kaki)}
+.mx{display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:6px;font-size:15px}
+.mx .h{display:flex;align-items:center;justify-content:center;font-weight:700;background:#efe9dc;border-radius:4px;padding:6px;text-align:center;line-height:1.4}
+.mx .c{border:1px solid var(--line);border-radius:4px;padding:8px 10px;min-height:70px;background:#fff;line-height:1.7}
+.mx .c small{display:block;font-weight:700;color:var(--sub);font-size:13px}
+.vs{display:grid;grid-template-columns:1fr auto 1fr;gap:6px 10px;align-items:center;font-size:15px;margin:10px 0 20px}
+.vs .l{text-align:right} .vs .mid{font-weight:700;text-align:center;background:#efe9dc;border-radius:4px;padding:2px 10px}
+.vs .hd{font-weight:700;font-size:16px}
+.heat td,.heat th{text-align:center;padding:6px 8px;font-size:15px}
+.regions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.regions div{border:1px solid var(--line);border-radius:4px;padding:10px 14px;font-size:16px;line-height:1.8;background:#fff}
+.regions div.core{grid-column:1/-1;background:var(--gold-bg);border-color:var(--gold)}
+.regions b{display:block}
+
+.thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0 6px}
+.thumbs figure{margin:0;text-align:center}
+.thumbs img{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:4px;cursor:zoom-in;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.thumbs img:hover,.thumbs img:focus{outline:3px solid #f3ddb0}
+.thumbs figcaption{font-size:14px;color:var(--sub);line-height:1.6;margin-top:6px}
+#lb{position:fixed;inset:0;z-index:50;background:rgba(20,20,20,.86);display:none;align-items:center;justify-content:center;padding:16px;cursor:zoom-out}
+#lb.show{display:flex}
+#lb img{max-width:100%;max-height:100%;border-radius:4px;background:#fff}
+#view svg .nd{cursor:pointer}
+#view svg .dim{opacity:.12}
+#view svg text.dim{opacity:.18}
+#nav{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(31,58,95,.97);display:flex;gap:4px;justify-content:center;overflow-x:auto;white-space:nowrap;padding:7px 12px;transform:translateY(-100%);transition:transform .25s;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+#nav.show{transform:none}
+#nav a{color:#fff;text-decoration:none;font-size:15px;line-height:1.6;padding:5px 12px;border-radius:4px;flex:none}
+#nav a.on{background:#fff;color:var(--navy);font-weight:700}
+.src{font-size:15px;color:var(--sub);border-top:1px solid var(--line);margin-top:64px;padding-top:16px;line-height:1.8}
+.foot{margin-top:28px;padding-top:16px;border-top:3px double var(--line);text-align:center}
+.foot .copyr{font-size:15px;color:var(--sub);margin:8px 0 0}
+#top{position:fixed;right:18px;bottom:18px;width:52px;height:52px;border-radius:50%;padding:0;background:var(--navy);color:#fff;border:none;font-size:20px;box-shadow:0 2px 6px rgba(0,0,0,.25);cursor:pointer;z-index:15}
+
+@media (max-width:640px){
+  body{font-size:17px} h1{font-size:25px} h2{font-size:21px} h3{font-size:19px}
+  #nav{justify-content:flex-start}
+  .map{grid-template-columns:1fr 1fr} .asks,.quad,.cats,.regions{grid-template-columns:1fr}
+  .thumbs{grid-template-columns:1fr 1fr}
+  th,td{padding:8px 10px;font-size:16px}
+  .mx{font-size:14px;grid-template-columns:auto 1fr 1fr 1fr}
+}
+@media print{#nav,#top,.btns,.copy,.tabs{display:none} body{background:#fff;font-size:12pt} h2{break-before:page}}
+</style>
+</head>
+<body>
+<nav id="nav" aria-label="ページ内の移動">
+  <a href="#s0">全体の流れ</a><a href="#s1">① 書き出す</a><a href="#s2">② 色を塗る</a><a href="#s3">③ 分かること</a><a href="#s4">④ AIで整理</a><a href="#s5">⑤ 図で見る</a><a href="#s6">⑥ 設計に使う</a>
+</nav>
+<div class="wrap">
+
+<header class="cover">
+  <div class="kicker">自分の棚卸しガイド　別冊</div>
+  <h1>キーワードを書き出し、色で分け、<br>AIと図で見えるようにする</h1>
+  <p class="lead">棚卸しと、強み・弱みの分析を、手順どおりに進めるための一冊</p>
+  <p class="author">制作：上村コーチ</p>
+  <p class="notice">許可なく複製・転載・転記・配布・公開することを禁じます。</p>
+</header>
+
+<div class="box green" style="margin-top:28px">
+  <p><strong>この一冊でやること</strong>は5つです。自分に関わる言葉を書き出す。色鉛筆で色を塗って分ける。AIに表へ整えてもらう。その表をこのページに入れて図にする。図を見て、事業の設計に使う。</p>
+  <p>1日で終える必要はありません。①と②で1回（30〜40分ほど）、④と⑤で1回、⑥で1回、の3回に分けるのが目安です。</p>
+</div>
+
+<!-- ============ 0 ============ -->
+<h2 id="s0"><span class="num">0</span>全体の流れ</h2>
+<p>棚卸しは、頭の中にあるものを外に出し、数えられる形にする作業です。文章で書こうとすると手が止まりやすいので、ここでは<strong>単語（キーワード）</strong>で出します。出した単語に色を塗ると、ばらばらだった言葉がまとまりになり、自分では気づいていなかった偏りや重なりが見えてきます。</p>
+
+<div class="map">
+  <a href="#s1"><em>① 書き出す</em><b>キーワード</b><span>自分に関わる言葉を、選ばずに紙へ</span></a>
+  <a href="#s2"><em>② 色を塗る</em><b>色分け</b><span>種類・好き嫌い・得意苦手で分ける</span></a>
+  <a href="#s4"><em>④ 整える</em><b>AIで表に</b><span>写真やメモを、決まった形の表に</span></a>
+  <a href="#s5"><em>⑤ 見る</em><b>図にする</b><span>表を入れると、8つの図になる</span></a>
+  <a href="#s6"><em>⑥ 使う</em><b>設計に生かす</b><span>強み・弱みと「誰に・何を」へ</span></a>
+</div>
+<p class="cap">図1　この一冊の流れ。③は、②で色を塗ると何が分かるかの説明です。</p>
+
+<!-- ============ 1 ============ -->
+<h2 id="s1"><span class="num">1</span>キーワードを書き出す</h2>
+
+<h3>考え方</h3>
+<p>書くのは、<strong>自分に関わりのある言葉</strong>です。やってきた仕事、扱ってきた道具、関わった人、好きなこと、苦手なこと。文章にせず、単語か短い言葉で書きます。「検査の手順書」「新人に教える」「朝礼で話す」「表計算」「町内会の会計」のような粒です。</p>
+<p>数は、まず<strong>50個</strong>を目安にします。30個を過ぎたあたりから、ふだん意識していない言葉が出てきます。そこからが棚卸しの中身です。</p>
+
+<h3>やり方</h3>
+<ol>
+  <li><strong>用意するもの</strong>：A4かそれより大きい紙を1〜2枚、黒のペン、色鉛筆（6色ほど）、時計。</li>
+  <li><strong>時間を20分と決める</strong>。</li>
+  <li><strong>紙の向きは横</strong>にして、行にそろえず、空いたところへ散らして書きます。あとで色を塗るので、言葉と言葉の間をあけます。</li>
+  <li><strong>下の「8つのきっかけ」を順に見て、浮かんだ言葉を書く</strong>。一つのきっかけで5〜8個が目安です。</li>
+  <li><strong>書いている間は、選ばない</strong>。大したことがないと感じる言葉も書きます。消さず、きれいに書こうとせず、手を止めません。</li>
+  <li><strong>一晩おいて足す</strong>。思い出した言葉は、同じ紙に書き足します。</li>
+</ol>
+
+<h3>8つのきっかけ</h3>
+<div class="asks">
+  <div><b>仕事・役目</b><span>担当してきた業務、係、役職、作ってきたもの</span></div>
+  <div><b>頼まれたこと</b><span>人から「お願い」「助かった」と言われたこと</span></div>
+  <div><b>道具・技術・資格</b><span>使える道具やソフト、持っている資格、覚えた技</span></div>
+  <div><b>人・場所</b><span>付き合いのある人、通った場所、入っている集まり</span></div>
+  <div><b>好きなこと・続いていること</b><span>趣味、習いごと、つい時間を使ってしまうこと</span></div>
+  <div><b>暮らし・家のこと</b><span>家事、育児、介護、地域や学校の役目</span></div>
+  <div><b>苦労したこと・避けてきたこと</b><span>うまくいかなかったこと、気が重いこと</span></div>
+  <div><b>気になっていること</b><span>やってみたいこと、気がかりなこと、最近よく調べること</span></div>
+</div>
+
+<div class="box kaki">
+  <h4>手が止まったとき</h4>
+  <p>一つの言葉から、枝を伸ばします。「検査」と書いたら、「誰と」「何を使って」「どこで困った」「何を作った」と自分に尋ね、出た言葉を横に書きます。一つの言葉から3つ出すつもりで進めると、数がそろいます。</p>
+</div>
+
+<!-- ============ 2 ============ -->
+<h2 id="s2"><span class="num">2</span>色を塗って分ける</h2>
+
+<h3>考え方</h3>
+<p>書き出した言葉は、そのままでは眺めても何も分かりません。<strong>同じ見方で、全部の言葉に色を付ける</strong>と、分かれて見えてきます。見方は3つあり、1回に1つずつ、合わせて3回塗ります。</p>
+
+<figure class="fig">
+<svg viewBox="0 0 420 250" role="img" aria-label="紙に散らして書いた言葉を、色の丸で囲んで分けた様子">
+  <rect x="10" y="10" width="400" height="230" fill="#fffdf4" stroke="#2b2a28" stroke-width="2.5" rx="3"/>
+  <g font-size="14" fill="#2b2a28" text-anchor="middle">
+    <ellipse cx="88" cy="50" rx="58" ry="18" fill="none" stroke="#1f3a5f" stroke-width="3"/><text x="88" y="55">検査の手順書</text>
+    <ellipse cx="232" cy="44" rx="52" ry="18" fill="none" stroke="#1f3a5f" stroke-width="3"/><text x="232" y="49">新人に教える</text>
+    <ellipse cx="350" cy="62" rx="44" ry="18" fill="none" stroke="#1f3a5f" stroke-width="3"/><text x="350" y="67">朝礼で話す</text>
+    <ellipse cx="70" cy="118" rx="42" ry="18" fill="none" stroke="#3d7a5a" stroke-width="3"/><text x="70" y="123">表計算</text>
+    <ellipse cx="190" cy="112" rx="50" ry="18" fill="none" stroke="#b85a32" stroke-width="3"/><text x="190" y="117">町内会の会計</text>
+    <ellipse cx="326" cy="128" rx="58" ry="18" fill="none" stroke="#a57a1c" stroke-width="3"/><text x="326" y="133">商工会の知り合い</text>
+    <ellipse cx="96" cy="190" rx="54" ry="18" fill="none" stroke="#7a4a6e" stroke-width="3"/><text x="96" y="195">定年後の収入</text>
+    <ellipse cx="236" cy="186" rx="50" ry="18" fill="none" stroke="#1f3a5f" stroke-width="3"/><text x="236" y="191">苦情の報告書</text>
+    <ellipse cx="350" cy="198" rx="36" ry="18" fill="none" stroke="#b85a32" stroke-width="3"/><text x="350" y="203">庭の畑</text>
+  </g>
+  <g font-size="15" font-weight="700">
+    <text x="146" y="42" fill="#3d7a5a">♥</text><text x="286" y="34" fill="#3d7a5a">♥</text><text x="394" y="50" fill="#7a4a6e">×</text>
+    <text x="150" y="60" fill="#1f3a5f">得</text><text x="290" y="54" fill="#1f3a5f">得</text><text x="392" y="74" fill="#b85a32">苦</text>
+    <text x="12" y="46" fill="#a57a1c" font-size="17">◎</text><text x="170" y="40" fill="#a57a1c" font-size="17">◎</text>
+  </g>
+</svg>
+<figcaption class="cap">図2　1回目は丸の色で種類を分け、2回目と3回目は言葉の横に印を足します。</figcaption>
+</figure>
+
+<h3>やり方 ―― 3回塗る</h3>
+<table>
+  <tr><th style="width:26%">回</th><th>見方</th><th>塗り方</th></tr>
+  <tr><td><strong>1回目</strong><br>種類</td><td>その言葉は、何の話か</td><td>言葉を、種類ごとの色の丸で囲みます。<br><span class="swatch" style="background:#1f3a5f"></span>仕事　<span class="swatch" style="background:#3d7a5a"></span>道具・技術　<span class="swatch" style="background:#b85a32"></span>暮らし・地域<br><span class="swatch" style="background:#a57a1c"></span>人・つながり　<span class="swatch" style="background:#7a4a6e"></span>気がかり・これから<br>種類の分け方は、自分の紙に合わせて変えて構いません。4〜6種類が扱いやすい数です。</td></tr>
+  <tr><td><strong>2回目</strong><br>好き・嫌い</td><td>やっていて、気持ちはどうか</td><td>好きな言葉の横に「♥」、嫌いな言葉の横に「×」。どちらでもない言葉には、何も付けません。</td></tr>
+  <tr><td><strong>3回目</strong><br>得意・苦手</td><td>人と比べて、うまくやれるか</td><td>得意な言葉の横に「得」、苦手な言葉の横に「苦」。どちらでもなければ付けません。</td></tr>
+  <tr><td><strong>仕上げ</strong><br>頼まれた</td><td>人から頼まれたことがあるか</td><td>頼まれたこと・礼を言われたことがある言葉に「◎」。</td></tr>
+</table>
+
+<div class="box gold">
+  <h4>塗るときに決めておくこと</h4>
+  <ul>
+    <li><strong>1回に1つの見方だけ</strong>で、紙全体を塗り切ります。途中で別の見方を混ぜると、判断がぶれます。</li>
+    <li><strong>迷う言葉は、塗らずに置きます</strong>。「好きとも嫌いとも言えない」は、それで一つの答えです。</li>
+    <li><strong>好き・嫌いと、得意・苦手は別</strong>に付けます。「得意だが好きではない」「好きだが苦手」が出てくるところに、この作業の値打ちがあります。</li>
+    <li><strong>色の決まり（どの色が何か）を、紙の隅に書いておきます</strong>。あとでAIに伝えるときに使います。</li>
+  </ul>
+</div>
+
+<h3>書き方の例</h3>
+<p>品質管理の仕事をしている55歳の人（架空の人物）が、A4の紙3枚に書き出して色を塗った例です。行にそろえず、思い出した順に散らして書いています。画像を押すと大きく表示され、もう一度押すと閉じます。</p>
+<div class="thumbs">
+  <figure><img src="img/dump_1.jpg" alt="書き方の例 1枚目：仕事・役目、頼まれたこと、道具・技術・資格の言葉を、青・橙・緑の丸で囲んだ紙" loading="lazy" tabindex="0"><figcaption>1枚目　仕事・頼まれたこと・道具や資格</figcaption></figure>
+  <figure><img src="img/dump_2.jpg" alt="書き方の例 2枚目：人・場所、好きなこと、暮らしの言葉を、茶・桃・黄の丸で囲んだ紙" loading="lazy" tabindex="0"><figcaption>2枚目　人や場所・好きなこと・暮らし</figcaption></figure>
+  <figure><img src="img/dump_3.jpg" alt="書き方の例 3枚目：苦労したこと、気になっていることの言葉を、紫・水色の丸で囲んだ紙" loading="lazy" tabindex="0"><figcaption>3枚目　苦労したこと・気になっていること</figcaption></figure>
+  <figure><img src="img/dump_p1.jpg" alt="書き方の例：1枚目と同じ言葉を、種類ごとに並べて書いた紙" loading="lazy" tabindex="0"><figcaption>種類ごとに並べて書いた場合（1枚目と同じ言葉）</figcaption></figure>
+</div>
+<p class="cap">図2-2　散らして書いても、並べて書いても構いません。丸の色と印が読み取れれば、あとの手順は同じです。</p>
+
+<!-- ============ 3 ============ -->
+<h2 id="s3"><span class="num">3</span>色を塗ると、何が分かるか</h2>
+<p>塗り終えた紙を、少し離して眺めます。見えてくるものは4つあります。</p>
+<table>
+  <tr><th style="width:24%">見えるもの</th><th>紙の上でどう見えるか</th><th>何の手がかりになるか</th></tr>
+  <tr><td><strong>偏り</strong></td><td>ある色の丸が多い。ある色がほとんど無い</td><td>自分の経験がどこに積もっているか。事業の土台になる場所</td></tr>
+  <tr><td><strong>重なり</strong></td><td>「♥」と「得」と「◎」が、同じ言葉に付いている</td><td>売り物の種。好きで、うまくやれて、人が頼んでくること</td></tr>
+  <tr><td><strong>ずれ</strong></td><td>「得」なのに「×」、「♥」なのに「苦」</td><td>続けにくいこと、これから身につけたいこと</td></tr>
+  <tr><td><strong>つながり</strong></td><td>種類は違うのに、一緒に出てくる言葉がある</td><td>組み合わせると商品になる材料（例：「手順書」と「新人に教える」）</td></tr>
+</table>
+
+<h3>好き・嫌い × 得意・苦手で、4つに分かれる</h3>
+<div class="quad">
+  <div class="q1"><b>好き × 得意</b><span>柱にする場所。ここに「◎（頼まれた）」が重なれば、売り物の種です。</span></div>
+  <div class="q2"><b>嫌い × 得意</b><span>頼まれるが、続けると疲れる場所。主な売り物にせず、手順にして短く済ませるか、値段を上げます。</span></div>
+  <div class="q3"><b>好き × 苦手</b><span>やりたいが、まだ力が足りない場所。学ぶか、得意な人と組みます。</span></div>
+  <div class="q4"><b>嫌い × 苦手</b><span>やらないと決める場所。人に頼むか、その仕事が要らない組み方を選びます。</span></div>
+</div>
+<p class="cap">図3　2回目と3回目の印を掛け合わせると、言葉が4つの場所に分かれます。</p>
+
+<p>紙の上でも、ここまでは分かります。ただ、50個を超える言葉を目で数えたり、言葉どうしのつながりを追ったりするのは骨が折れます。そこから先を、AIとこのページの図に任せます。</p>
+
+<!-- ============ 4 ============ -->
+<h2 id="s4"><span class="num">4</span>AIに整理してもらう</h2>
+<p>AIには、<strong>紙の内容を決まった形の表に整える</strong>ことと、<strong>言葉どうしのつながりの候補を挙げる</strong>ことを頼みます。色分け（種類・好き嫌い・得意苦手）は自分で決めたものを使い、AIには決めさせません。使うのは、ChatGPT・Claude・Gemini など、ふだんお使いの対話型のAIで構いません。</p>
+
+<div class="box kaki">
+  <h4>AIに入れる前に</h4>
+  <ul>
+    <li><strong>人の名前、勤め先の名前、お客さんの名前は入れません</strong>。「Aさん」「前の職場」のように言い換えます。</li>
+    <li><strong>勤め先の中だけの情報</strong>（売上、取引先、社内の資料の中身）は入れません。</li>
+    <li>AIの答えは<strong>下書き</strong>です。違うと思った分類やつながりは、自分で直します。</li>
+  </ul>
+</div>
+
+<div class="step">
+  <span class="place">場所：紙とスマートフォン（またはパソコン）</span>
+  <h4>ステップ1　紙の内容を、文字にする</h4>
+  <p>方法は2つあります。やりやすいほうを選びます。</p>
+  <ul>
+    <li><strong>自分で打つ</strong>：1行に1つ、「言葉, 種類, 好き嫌い, 得意苦手, 頼まれた」の順に、読点かカンマで区切って書きます。印の無いところは空けたままで構いません。<br>例：<code>検査の手順書, 仕事, 好き, 得意, 頼まれた</code>　／　<code>朝礼で話す, 仕事, 嫌い, 苦手,</code></li>
+    <li><strong>写真を撮ってAIに読ませる</strong>：紙全体が写るように撮り、次の文と一緒にAIに渡します。</li>
+  </ul>
+  <div class="prompt" id="p0">この写真は、私が自分について書き出した言葉を、色鉛筆で分けた紙です。書いてある言葉を、1行に1つずつ書き出してください。
+
+色と印の決まりは次のとおりです。
+・丸の色：（例）紺＝仕事、緑＝道具・技術、橙＝暮らし・地域、黄土＝人・つながり、紫＝気がかり・これから
+・「♥」＝好き、「×」＝嫌い、「得」＝得意、「苦」＝苦手、「◎」＝人から頼まれたことがある
+
+1行の形は「言葉, 種類, 好き嫌い, 得意苦手, 頼まれた」としてください。印が無い項目は空欄にします。
+読めない文字は【読めない】と書き、推測で埋めないでください。色や印が判別できないものは、その項目を空欄にして、最後に「判別できなかったもの」として一覧にしてください。
+紙に書かれていない言葉は足さないでください。</div>
+  <button type="button" class="copy" data-c="p0">この文をコピーする</button>
+  <div class="ok">✓ できたらこうなる：自分の言葉が、1行に1つずつ並んだ文字になっている。</div>
+  <details><summary>つまずいたら（AIへの聞き方）</summary>
+    <p>読み取りが大きく違うとき：「<strong>まだ書き直さないでください。</strong>どの言葉が読みにくかったかだけ、一覧で教えてください。」と尋ね、その言葉だけ自分で打ち直します。写真が暗い・斜めのときは、明るい場所で真上から撮り直します。</p>
+  </details>
+  <label class="done"><input type="checkbox">ステップ1が終わった</label>
+</div>
+
+<div class="step">
+  <span class="place">場所：AIの入力欄</span>
+  <h4>ステップ2　決まった形の表に整えてもらう</h4>
+  <p>次の文をコピーし、最後の【私の言葉】のところに、ステップ1の文字を貼って送ります。</p>
+  <div class="prompt" id="p1">これから、私が自分について書き出した言葉を渡します。次の決まりで、表に整えてください。
+
+1. 列は「キーワード｜カテゴリ｜好き嫌い｜得意苦手｜頼まれた｜関連」の6つにする
+2. 好き嫌いは「好き・ふつう・嫌い」、得意苦手は「得意・ふつう・苦手」、頼まれたは「はい・いいえ」のどれかで書く
+3. 私が書いていない項目は、あなたが決めずに「ふつう」「いいえ」とする
+4. カテゴリは、私が付けたものをそのまま使う。私が付けていない言葉だけ、近いカテゴリに仮に入れる
+5. 「関連」には、この表の中にある別のキーワードのうち、つながりがあると考えられるものを最大3つ、読点で区切って書く。表に無い言葉は書かない
+6. キーワードを足したり、言い換えたり、まとめたりしない
+7. 出力は、マークダウンの表を1つだけにする。前置きや感想は書かない
+8. 表のあとに、「私が仮に入れたカテゴリ」と「関連を付けた理由が弱いもの」を、短い一覧で書く
+
+【私の言葉】
+（ここに貼る）</div>
+  <button type="button" class="copy" data-c="p1">この文をコピーする</button>
+  <div class="ok">✓ できたらこうなる：1行目が「| キーワード | カテゴリ | 好き嫌い | 得意苦手 | 頼まれた | 関連 |」で始まる表が返ってくる。</div>
+  <details><summary>つまずいたら（AIへの聞き方）</summary>
+    <p>表が途中で切れたとき：「<strong>まだ作り直さないでください。</strong>何行目まで出せたかを教えてください。」と尋ねてから、「続きを同じ形で出してください」と頼みます。</p>
+    <p>言葉が勝手に増えた・言い換えられたとき：「<strong>何も変えないでください。</strong>私が渡した言葉と、表のキーワードで違っているものだけを一覧にしてください。」</p>
+  </details>
+  <label class="done"><input type="checkbox">ステップ2が終わった</label>
+</div>
+
+<div class="step">
+  <span class="place">場所：AIの答え → 自分の目</span>
+  <h4>ステップ3　表を、自分の目で直す</h4>
+  <p>AIが仮に入れたカテゴリと、「関連」の列を見ます。自分の実感と違うものは、AIに直してもらうか、あとで自分で書き換えます。関連は、AIが言葉の意味から推し量ったものです。<strong>自分の経験の中で実際につながっていたもの</strong>だけを残します。</p>
+  <div class="prompt" id="p2">表を次のとおり直してください。直すのは、私が挙げた行だけにしてください。ほかの行は一字も変えないでください。
+
+・「（言葉）」のカテゴリを「（カテゴリ）」に
+・「（言葉）」の関連から「（言葉）」を外す
+・「（言葉）」の関連に「（言葉）」を足す
+
+直したあと、表全体をもう一度、同じ形で出してください。</div>
+  <button type="button" class="copy" data-c="p2">この文をコピーする</button>
+  <div class="ok">✓ できたらこうなる：どの行を見ても、自分で「そのとおり」と言える。</div>
+  <label class="done"><input type="checkbox">ステップ3が終わった</label>
+</div>
+
+<div class="step">
+  <span class="place">場所：パソコンのメモ帳（スマートフォンなら、この手順は飛ばせます）</span>
+  <h4>ステップ4　表を、ファイルに保存する</h4>
+  <p>AIの答えの表をコピーし、メモ帳などに貼って、<strong>「tanaoroshi.md」</strong>のように、名前の終わりを「.md」にして保存します。AIに「この表を、マークダウンのファイル（.md）で渡してください」と頼める場合は、それでも構いません。</p>
+  <p>ファイルにせず、表を<strong>そのまま貼り付ける</strong>こともできます（次の章の貼り付け欄）。スマートフォンでは、こちらが早く済みます。</p>
+  <div class="ok">✓ できたらこうなる：「.md」で終わるファイルが1つできている。または、表をコピーした状態になっている。</div>
+  <label class="done"><input type="checkbox">ステップ4が終わった</label>
+</div>
+
+<!-- ============ 5 ============ -->
+<h2 id="s5"><span class="num">5</span>図で見る</h2>
+<p>ステップ4のファイルを下の枠に入れるか、表を貼り付けると、8つの図になります。<strong>入れた内容は、このパソコン・スマートフォンの中で図にするだけで、外には送られず、保存もされません</strong>（ページを閉じると消えます）。</p>
+
+<div class="tool" id="tool">
+  <h4>表を入れて、図にする</h4>
+  <div id="drop">
+    <b>ここに「.md」のファイルを置く</b>
+    <span class="cap">ファイルをつかんで、この枠の上で離します。</span>
+    <div class="btns" style="justify-content:center"><button type="button" class="b" id="pick">ファイルを選ぶ</button><input type="file" id="file" accept=".md,.txt,.markdown,text/plain" hidden></div>
+  </div>
+  <label for="ta" style="font-weight:700">または、表をここに貼り付ける</label>
+  <textarea id="ta" placeholder="| キーワード | カテゴリ | 好き嫌い | 得意苦手 | 頼まれた | 関連 |&#10;|---|---|---|---|---|---|&#10;| 検査の手順書 | 仕事 | 好き | 得意 | はい | 新人に教える、苦情の報告書 |"></textarea>
+  <div class="btns">
+    <button type="button" class="b main" id="go">図にする</button>
+    <button type="button" class="b" id="demo">見本のデータで試す</button>
+    <button type="button" class="b" id="dl">見本のファイルを保存する</button>
+    <button type="button" class="b" id="clr">入れた内容を消す</button>
+  </div>
+  <div id="stat" class="cap">まだ何も入っていません。「見本のデータで試す」を押すと、Aさん（架空の人物）の例で図が出ます。</div>
+
+  <div class="tabs" id="tabs" hidden>
+    <button type="button" data-v="group" class="on">グループ</button>
+    <button type="button" data-v="matrix">マトリクス</button>
+    <button type="button" data-v="mind">マインドマップ</button>
+    <button type="button" data-v="net">言葉のつながり</button>
+    <button type="button" data-v="heat">種類どうしの関係</button>
+    <button type="button" data-v="vs">対比</button>
+    <button type="button" data-v="venn">ベン図</button>
+    <button type="button" data-v="sum">まとめ</button>
+  </div>
+  <div id="view"></div>
+</div>
+
+<h3>8つの図の見方</h3>
+<table>
+  <tr><th style="width:26%">図</th><th>何が見えるか</th><th>見るところ</th></tr>
+  <tr><td><strong>グループ</strong></td><td>種類ごとに言葉をまとめたもの</td><td>どの種類に言葉が多いか。緑（好き）が集まる種類はどこか</td></tr>
+  <tr><td><strong>マトリクス</strong></td><td>好き嫌い × 得意苦手の9つの枠</td><td>右上（好き × 得意）に何があるか。左上（嫌い × 得意）に入ったものは何か</td></tr>
+  <tr><td><strong>マインドマップ</strong></td><td>自分を真ん中に、種類→言葉と枝を広げた図</td><td>枝の太いところ・細いところ。全体を一枚で眺める</td></tr>
+  <tr><td><strong>言葉のつながり</strong></td><td>関連のある言葉を線で結んだ図</td><td>線が多く集まる言葉。そこが自分の中心にある経験（右クリックしながらドラッグで図を動かせます）</td></tr>
+  <tr><td><strong>種類どうしの関係</strong></td><td>種類と種類の間に、つながりが何本あるかの表</td><td>違う種類なのに数が多い組み合わせ。組み合わせて商品になる材料</td></tr>
+  <tr><td><strong>対比</strong></td><td>好きと嫌い、得意と苦手を左右に並べたもの</td><td>左右の数の差。好きが多いのに得意が少ない種類はどこか</td></tr>
+  <tr><td><strong>ベン図</strong></td><td>「好き」「得意」「頼まれた」の3つの輪の重なり</td><td>3つが重なる真ん中。売り物の種</td></tr>
+  <tr><td><strong>まとめ</strong></td><td>強み・弱みの下書き</td><td>次の章で使う材料。文字として写し取れる</td></tr>
+</table>
+
+<!-- ============ 6 ============ -->
+<h2 id="s6"><span class="num">6</span>事業の設計に使う</h2>
+<p>図は、眺めて終わりにしません。次の3つに置き直します。</p>
+
+<h3>1．強みと弱みの下書きにする</h3>
+<p>「まとめ」の図に出る下書きを、強み・弱みの候補として書き写します。この時点ではまだ<strong>候補</strong>です。好きで得意だと自分で感じていることと、実際にうまくいったことは、同じとは限りません。『自分の棚卸しガイド』2章のフィードバック分析（当時の期待と、実際の結果を比べる）で、一つずつ確かめます。</p>
+
+<h3>2．「何を」を決める材料にする</h3>
+<ul>
+  <li><strong>ベン図の真ん中</strong>（好き・得意・頼まれた）が、売り物の種です。1つでもあれば、それを出発点にします。</li>
+  <li><strong>真ん中が空のとき</strong>は、「得意 × 頼まれた」を見ます。人が頼んでくることは、相手にとって値打ちがある証拠です。好きかどうかは、続け方（時間の使い方、値段）で調整できます。</li>
+  <li><strong>言葉のつながりで線が集まる言葉</strong>は、複数の経験にまたがる力です。Aさんの例では「検査の手順書」に線が集まり、「迷うところを先回りして文書にする力」という言い方にまとまりました。</li>
+</ul>
+
+<h3>3．「やらないこと」を決める材料にする</h3>
+<ul>
+  <li><strong>嫌い × 苦手</strong>に入った言葉は、売り物の中に入れません。事業に必要な作業なら、人に頼むか、その作業が要らない形を選びます。</li>
+  <li><strong>嫌い × 得意</strong>に入った言葉は、頼まれても主な売り物にしません。引き受けるなら、手順を決めて短く済ませるか、値段を上げます。</li>
+</ul>
+
+<div class="step">
+  <span class="place">場所：AIの入力欄（やってみたい人だけ）</span>
+  <h4>図を見たあとで、AIと一緒に言葉にまとめる</h4>
+  <p>「好き × 得意」に入った言葉に共通するものを、AIに言葉にしてもらうこともできます。出てきた言い方が自分の実感と合うかどうかは、自分で決めます。</p>
+  <div class="prompt" id="p3">次の表は、私が自分について書き出し、分類したものです。次の3つをしてください。
+
+1. 「好き」かつ「得意」の言葉をすべて挙げ、そのうち「頼まれた」が「はい」のものに印を付ける
+2. 1で挙げた言葉に共通していることを、15字以内の言い方で3つまで挙げる。それぞれ、どの言葉をもとにしたかを書く
+3. その言い方が合っているかを確かめるために、私に尋ねたい質問を3つ書く
+
+表に書かれていない事実は足さないでください。推し量って書いたところには「（推測）」と付けてください。私を励ます言葉や、事業の提案は要りません。
+
+【表】
+（ここに貼る）</div>
+  <button type="button" class="copy" data-c="p3">この文をコピーする</button>
+  <div class="ok">✓ できたらこうなる：共通点の言い方が3つまでと、自分への質問が3つ返ってくる。質問に答えてみて、しっくり来た言い方を1つ残す。</div>
+  <details><summary>つまずいたら（AIへの聞き方）</summary>
+    <p>答えが褒め言葉ばかりのとき：「<strong>評価は書かないでください。</strong>表の言葉と、そこから言えることだけを書いてください。」</p>
+  </details>
+</div>
+
+<div class="box">
+  <h4>このあと</h4>
+  <p>強み・弱みの候補が出たら、『自分の棚卸しガイド』の2章（フィードバック分析）で確かめ、3章・4章（SWOT・クロスSWOT）で世の中の動きと並べ、5章（誰に・何を・いくらで）で小さな計画にします。この別冊は、その手前の「材料を出して、分けて、見えるようにする」ところを受け持っています。</p>
+  <p><a href="guide.html">『自分の棚卸しガイド』を開く</a></p>
+</div>
+
+<p class="src">
+見本に出てくるAさんは、説明のために作った架空の人物で、実在の人物・事業者とは関係がない。<br>
+図は、入れた表をそのまま数えて並べたもので、強み・弱みを判定するものではない。「関連」の線は、表の「関連」の列に書かれた言葉どうしを結んでいる。<br>
+第1版
+</p>
+<div class="foot">
+  <p class="notice">許可なく複製・転載・転記・配布・公開することを禁じます。</p>
+  <p class="copyr">制作：上村コーチ　／　© 2026 Kei UEMURA</p>
+</div>
+</div>
+
+<button type="button" id="top" aria-label="ページの先頭へ戻る">▲</button>
+<div id="lb" role="dialog" aria-label="画像を大きく表示（押すと閉じます）"><img alt=""></div>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  var COL=['#1f3a5f','#3d7a5a','#b85a32','#a57a1c','#7a4a6e','#2f7d8c','#8a5a2b','#5d5a55'];
+  var SAMPLE=[
+'# Aさんの棚卸し（見本・架空の人物）','',
+'| キーワード | カテゴリ | 好き嫌い | 得意苦手 | 頼まれた | 関連 |','|---|---|---|---|---|---|',
+'| 検査の手順書 | 仕事 | 好き | 得意 | はい | 新人に教える、苦情の報告書、現場の見回り |',
+'| 新人に教える | 仕事 | 好き | 得意 | はい | 検査の手順書、現場の見回り |',
+'| 苦情の報告書 | 仕事 | ふつう | 得意 | はい | 検査の手順書、文章を書く |',
+'| 現場の見回り | 仕事 | 好き | 得意 | いいえ | 検査の手順書、新人に教える |',
+'| 朝礼で話す | 仕事 | 嫌い | 苦手 | いいえ | 人前で説明する |',
+'| 人前で説明する | 仕事 | 嫌い | 苦手 | いいえ | 朝礼で話す |',
+'| 会議の進行 | 仕事 | 嫌い | ふつう | はい | 人前で説明する |',
+'| 納期の調整 | 仕事 | 嫌い | 得意 | はい | 会議の進行、段取りを組む |',
+'| 文章を書く | 道具・技術 | 好き | 得意 | はい | 検査の手順書、苦情の報告書、町内会のお知らせ |',
+'| 表計算 | 道具・技術 | ふつう | ふつう | いいえ | 町内会の会計 |',
+'| 写真で記録する | 道具・技術 | 好き | ふつう | いいえ | 現場の見回り、庭の畑 |',
+'| 衛生管理の知識 | 道具・技術 | ふつう | 得意 | はい | 検査の手順書、現場の見回り |',
+'| 営業 | 道具・技術 | ふつう | 苦手 | いいえ | 人前で説明する |',
+'| 段取りを組む | 道具・技術 | 好き | 得意 | はい | 納期の調整、町内会の行事 |',
+'| 町内会の会計 | 暮らし・地域 | ふつう | 得意 | はい | 表計算、町内会のお知らせ |',
+'| 町内会のお知らせ | 暮らし・地域 | 好き | 得意 | はい | 文章を書く、町内会の会計 |',
+'| 町内会の行事 | 暮らし・地域 | ふつう | ふつう | はい | 段取りを組む |',
+'| 庭の畑 | 暮らし・地域 | 好き | ふつう | いいえ | 写真で記録する |',
+'| 料理 | 暮らし・地域 | 好き | 苦手 | いいえ | 庭の畑 |',
+'| 商工会の知り合い | 人・つながり | ふつう | ふつう | いいえ | 小さな食品の店 |',
+'| 小さな食品の店 | 人・つながり | 好き | ふつう | いいえ | 商工会の知り合い、衛生管理の知識 |',
+'| 元の同僚 | 人・つながり | 好き | ふつう | いいえ | 新人に教える |',
+'| 定年後の収入 | 気がかり・これから | ふつう | ふつう | いいえ | 小さな食品の店 |',
+'| 人に教える仕事 | 気がかり・これから | 好き | ふつう | いいえ | 新人に教える、検査の手順書 |',
+'| AIを使う | 気がかり・これから | 好き | 苦手 | いいえ | 文章を書く |'].join('\n');
+
+  var D=null,cur='group';
+  function likeV(s){s=s||'';return /嫌/.test(s)?-1:/好/.test(s)?1:0}
+  function skillV(s){s=s||'';return /苦手|不得意/.test(s)?-1:/得意/.test(s)?1:0}
+  function askV(s){s=(s||'').trim();if(!s||/いいえ|なし|無|×|✕|^[-－ー]$|no/i.test(s))return false;return /はい|○|◯|◎|あり|有|頼まれ|yes/i.test(s)}
+  function splitRel(s){return (s||'').split(/[、,，／\/]/).map(function(t){return t.trim()}).filter(Boolean)}
+  function parse(text){
+    var lines=text.replace(/\r/g,'').split('\n'),rows=[],items=[],seen={};
+    lines.forEach(function(l){if(/^\s*\|/.test(l)){var c=l.trim().replace(/^\|/,'').replace(/\|\s*$/,'').split('|').map(function(x){return x.trim()});
+      if(!c.every(function(x){return /^:?-{2,}:?$/.test(x)||x===''}))rows.push(c)}});
+    var ix={k:0,cat:1,like:2,skill:3,ask:4,rel:5},body=rows;
+    if(rows.length&&rows[0].some(function(h){return /キーワード|言葉|ことば/.test(h)})){
+      var h=rows[0],f=function(re){for(var i=0;i<h.length;i++)if(re.test(h[i]))return i;return -1};
+      ix={k:f(/キーワード|言葉|ことば/),cat:f(/カテゴリ|種類|分類/),like:f(/好き|嫌い/),skill:f(/得意|苦手/),ask:f(/頼まれ/),rel:f(/関連|つながり/)};body=rows.slice(1)}
+    if(!rows.length){ // 表でないとき：読点・カンマ区切りの行として読む
+      body=lines.filter(function(l){return l.trim()&&!/^\s*#/.test(l)&&/[,、，\t]/.test(l)}).map(function(l){
+        var c=l.replace(/^\s*[-・*]\s*/,'').split(/[,，\t]|、(?![^（(]*[）)])/).map(function(x){return x.trim()});return c})}
+    body.forEach(function(c){var k=(c[ix.k]||'').replace(/\*\*/g,'').trim();if(!k||seen[k])return;seen[k]=1;
+      items.push({k:k,cat:(ix.cat>=0&&c[ix.cat]||'').trim()||'分けていない',like:ix.like>=0?likeV(c[ix.like]):0,
+        skill:ix.skill>=0?skillV(c[ix.skill]):0,ask:ix.ask>=0?askV(c[ix.ask]):false,rel:ix.rel>=0?splitRel(c[ix.rel]):[]})});
+    var cats=[];items.forEach(function(it){if(cats.indexOf(it.cat)<0)cats.push(it.cat)});
+    var idx={};items.forEach(function(it,i){idx[it.k]=i;it.deg=0});
+    var es={},edges=[],miss=0;
+    items.forEach(function(it,i){it.rel.forEach(function(r){var j=idx[r];if(j===undefined){miss++;return}if(j===i)return;
+      var key=Math.min(i,j)+'-'+Math.max(i,j);if(!es[key]){es[key]=1;edges.push([Math.min(i,j),Math.max(i,j)]);items[i].deg++;items[j].deg++}})});
+    return {items:items,cats:cats,edges:edges,miss:miss};
+  }
+  function cc(cat){return COL[D.cats.indexOf(cat)%COL.length]}
+  function chip(it){return '<span class="chip l'+it.like+'">'+esc(it.k)+(it.skill?'<span class="m s'+it.skill+'">'+(it.skill>0?'得':'苦')+'</span>':'')+(it.ask?'<span class="m" style="color:#a57a1c">◎</span>':'')+'</span>'}
+  var LEG='<div class="legend"><span><i style="background:#e8f1ec;border:1px solid #3d7a5a"></i>好き</span><span><i style="background:#fff;border:1px solid #c9c0ae"></i>ふつう</span><span><i style="background:#f1e8ef;border:1px solid #7a4a6e"></i>嫌い</span><span><b style="color:#1f3a5f">得</b>＝得意</span><span><b style="color:#b85a32">苦</b>＝苦手</span><span><b style="color:#a57a1c">◎</b>＝頼まれた</span></div>';
+
+  var V={};
+  V.group=function(){return '<h5>グループ：種類ごとのまとまり</h5>'+LEG+'<div class="cats">'+D.cats.map(function(c){
+    var its=D.items.filter(function(i){return i.cat===c});
+    return '<div style="border-top-color:'+cc(c)+'"><h6>'+esc(c)+'（'+its.length+'個）</h6>'+its.map(chip).join('')+'</div>'}).join('')+'</div>'};
+  V.matrix=function(){var rows=[[1,'得意'],[0,'ふつう'],[-1,'苦手']],cols=[[-1,'嫌い'],[0,'ふつう'],[1,'好き']];
+    var name={'1,1':'柱にする','-1,1':'主な売り物にしない','1,-1':'学ぶ・人と組む','-1,-1':'やらない'};
+    var bg={'1,1':'#e8f1ec','-1,1':'#f6efdc','1,-1':'#e9eef5','-1,-1':'#f1e8ef'};
+    var s='<h5>マトリクス：好き嫌い × 得意苦手</h5>'+LEG+'<div class="mx"><div></div>'+cols.map(function(c){return '<div class="h">'+c[1]+'</div>'}).join('');
+    rows.forEach(function(r){s+='<div class="h">'+r[1]+'</div>';cols.forEach(function(c){var key=c[0]+','+r[0];
+      var its=D.items.filter(function(i){return i.like===c[0]&&i.skill===r[0]});
+      s+='<div class="c" style="background:'+(bg[key]||'#fff')+'">'+(name[key]?'<small>'+name[key]+'</small>':'')+its.map(chip).join('')+'</div>'})});
+    return s+'</div><p class="cap">右上が「好き × 得意」です。横は好き嫌い、縦は得意苦手です。</p>'};
+  V.mind=function(){ // 左右に枝を広げる。言葉は1行ずつ置くので重ならない
+    var groups=D.cats.map(function(c){return {c:c,its:D.items.filter(function(i){return i.cat===c})}}).sort(function(a,b){return b.its.length-a.its.length});
+    var side=[[],[]],cnt=[0,0];groups.forEach(function(g){var k=cnt[0]<=cnt[1]?0:1;side[k].push(g);cnt[k]+=g.its.length+1});
+    var row=26,W=1140,H=Math.max(360,Math.max(cnt[0],cnt[1])*row+60),ln='',tx='',s='';
+    side.forEach(function(gs,k){var dir=k?-1:1,y=-(cnt[k]*row)/2;
+      gs.forEach(function(g){var col=cc(g.c),h=g.its.length*row,cy=y+h/2,cx=dir*170,kx=dir*300;
+        ln+='<path d="M0 0 C'+(dir*80)+' 0 '+(dir*80)+' '+cy+' '+cx+' '+cy+'" fill="none" stroke="'+col+'" stroke-width="4"/>';
+        g.its.forEach(function(it,j){var ky=y+j*row+row/2;
+          ln+='<path d="M'+cx+' '+cy+' C'+(dir*240)+' '+cy+' '+(dir*230)+' '+ky+' '+kx+' '+ky+'" fill="none" stroke="'+col+'" stroke-width="1.3" opacity=".65"/>';
+          tx+='<circle cx="'+kx+'" cy="'+ky+'" r="5" fill="'+(it.like>0?'#3d7a5a':it.like<0?'#7a4a6e':'#b9ae99')+'"/>'+
+            '<text x="'+(kx+dir*10)+'" y="'+(ky+5)+'" font-size="15" text-anchor="'+(k?'end':'start')+'" fill="#2b2a28">'+esc(it.k)+(it.skill>0?'　得':it.skill<0?'　苦':'')+(it.ask?' ◎':'')+'</text>'});
+        tx+='<rect x="'+(cx-66)+'" y="'+(cy-16)+'" width="132" height="32" rx="16" fill="'+col+'"/><text x="'+cx+'" y="'+(cy+5)+'" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">'+esc(g.c.length>9?g.c.slice(0,8)+'…':g.c)+'</text>';
+        y+=h+row})});
+    s='<svg id="svgOut" viewBox="'+(-W/2)+' '+(-H/2)+' '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif"><rect x="'+(-W/2)+'" y="'+(-H/2)+'" width="'+W+'" height="'+H+'" fill="#fff"/>'+ln+
+      '<circle r="44" fill="#2b2a28"/><text y="6" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">自分</text>'+tx+'</svg>';
+    return '<h5>マインドマップ：自分 → 種類 → 言葉</h5><div class="legend"><span><i style="background:#3d7a5a;border-radius:50%"></i>好き</span><span><i style="background:#b9ae99;border-radius:50%"></i>ふつう</span><span><i style="background:#7a4a6e;border-radius:50%"></i>嫌い</span><span>得＝得意　苦＝苦手　◎＝頼まれた</span></div>'+s+SAVE};
+  V.net=function(){var ns=[];D.items.forEach(function(it,i){if(it.deg>0)ns.push(i)});
+    if(!ns.length)return '<h5>言葉のつながり</h5><p>「関連」の列に、表の中の言葉が書かれていないため、線を引けませんでした。4章のステップ2の文で、AIに「関連」を付けてもらってください。</p>';
+    var P={},n=ns.length,W=1000,H=n>40?820:680;
+    ns.forEach(function(i,j){var t=j/n*Math.PI*2;P[i]={x:Math.cos(t)*260,y:Math.sin(t)*200}});
+    for(var it=0;it<320;it++){var F={};ns.forEach(function(i){F[i]={x:-P[i].x*0.012,y:-P[i].y*0.016}});
+      for(var a=0;a<n;a++)for(var b=a+1;b<n;b++){var p=P[ns[a]],q=P[ns[b]],dx=p.x-q.x,dy=p.y-q.y,d2=dx*dx+dy*dy+0.01,f=14000/d2,d=Math.sqrt(d2);
+        F[ns[a]].x+=dx/d*f;F[ns[a]].y+=dy/d*f;F[ns[b]].x-=dx/d*f;F[ns[b]].y-=dy/d*f}
+      D.edges.forEach(function(e){var p=P[e[0]],q=P[e[1]],dx=q.x-p.x,dy=q.y-p.y,d=Math.sqrt(dx*dx+dy*dy)||1,f=(d-150)*0.03;
+        F[e[0]].x+=dx/d*f;F[e[0]].y+=dy/d*f;F[e[1]].x-=dx/d*f;F[e[1]].y-=dy/d*f});
+      var cool=1-it/320;ns.forEach(function(i){var m=Math.sqrt(F[i].x*F[i].x+F[i].y*F[i].y)||1,st=Math.min(m,18*cool+1);
+        P[i].x=Math.max(-W/2+90,Math.min(W/2-90,P[i].x+F[i].x/m*st));P[i].y=Math.max(-H/2+40,Math.min(H/2-40,P[i].y+F[i].y/m*st))})}
+    var s='<svg id="svgOut" viewBox="'+(-W/2)+' '+(-H/2)+' '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif"><rect x="'+(-W/2)+'" y="'+(-H/2)+'" width="'+W+'" height="'+H+'" fill="#fff"/>';
+    D.edges.forEach(function(e){var same=D.items[e[0]].cat===D.items[e[1]].cat;
+      s+='<line data-a="'+e[0]+'" data-b="'+e[1]+'" x1="'+P[e[0]].x+'" y1="'+P[e[0]].y+'" x2="'+P[e[1]].x+'" y2="'+P[e[1]].y+'" stroke="'+(same?'#b9ae99':'#b85a32')+'" stroke-width="'+(same?1.4:2)+'"/>'});
+    ns.forEach(function(i){var t=D.items[i],r=Math.min(22,7+t.deg*2.6);
+      s+='<circle class="nd" data-i="'+i+'" cx="'+P[i].x+'" cy="'+P[i].y+'" r="'+r+'" fill="'+cc(t.cat)+'" opacity=".9"/><text class="nd" data-i="'+i+'" x="'+P[i].x+'" y="'+(P[i].y-r-5)+'" font-size="14" text-anchor="middle" fill="#2b2a28" font-weight="'+(t.deg>=4?700:400)+'">'+esc(t.k)+'</text>'});
+    s+='</svg>';
+    var top=D.items.slice().filter(function(t){return t.deg>0}).sort(function(a,b){return b.deg-a.deg}).slice(0,5);
+    var lone=D.items.length-ns.length;
+    return '<h5>言葉のつながり：関連のある言葉を線で結んだ図</h5><div class="legend">'+D.cats.map(function(c){return '<span><i style="background:'+cc(c)+';border-radius:50%"></i>'+esc(c)+'</span>'}).join('')+
+      '<span><i style="background:#b85a32;height:3px;vertical-align:4px"></i>種類をまたぐ線</span></div>'+
+      '<p class="cap" id="netHint">言葉（丸か文字）を押すと、その言葉とつながっているものだけが残り、ほかは薄くなります。もう一度押すか、何もないところを押すと元に戻ります。右クリックしながらドラッグで図を動かせます（ダブルクリックで元の位置に戻ります）。</p>'+s+SAVE+
+      '<p><strong>線が多く集まる言葉</strong>：'+top.map(function(t){return esc(t.k)+'（'+t.deg+'本）'}).join('、')+'</p>'+
+      '<p class="cap">丸が大きいほど、多くの言葉とつながっています。'+(lone?'どの言葉ともつながっていない言葉が'+lone+'個あり、この図には出していません。':'')+(D.miss?'表に無い言葉が「関連」に'+D.miss+'か所書かれていたので、そこは線を引いていません。':'')+'</p>'};
+  V.heat=function(){var n=D.cats.length,M=[],mx=1,i,j;for(i=0;i<n;i++){M.push([]);for(j=0;j<n;j++)M[i].push(0)}
+    D.edges.forEach(function(e){var a=D.cats.indexOf(D.items[e[0]].cat),b=D.cats.indexOf(D.items[e[1]].cat);M[a][b]++;if(a!==b)M[b][a]++;});
+    for(i=0;i<n;i++)for(j=0;j<n;j++)if(M[i][j]>mx)mx=M[i][j];
+    var s='<h5>種類どうしの関係：つながりの本数</h5><div style="overflow-x:auto"><table class="heat"><tr><th></th>'+D.cats.map(function(c){return '<th>'+esc(c)+'</th>'}).join('')+'</tr>';
+    for(i=0;i<n;i++){s+='<tr><th>'+esc(D.cats[i])+'</th>';for(j=0;j<n;j++){var v=M[i][j],al=v/mx;
+      s+='<td style="background:rgba('+(i===j?'31,58,95':'184,90,50')+','+(al*0.75).toFixed(2)+');color:'+(al>0.55?'#fff':'#2b2a28')+';font-weight:'+(v?700:400)+'">'+(v||'')+'</td>'}s+='</tr>'}
+    var best=[],k;for(i=0;i<n;i++)for(j=i+1;j<n;j++)if(M[i][j])best.push([M[i][j],D.cats[i],D.cats[j]]);best.sort(function(a,b){return b[0]-a[0]});
+    return s+'</table></div><p class="cap">斜めの紺色は同じ種類の中のつながり、橙色は違う種類どうしのつながりです。</p>'+
+      (best.length?'<p><strong>違う種類なのに、つながりが多い組み合わせ</strong>：'+best.slice(0,3).map(function(b){return esc(b[1])+' と '+esc(b[2])+'（'+b[0]+'本）'}).join('、')+'</p>':'<p>違う種類どうしのつながりは、いまの表にはありません。</p>')};
+  V.vs=function(){function side(key,pos,neg,title){var s='<div class="vs"><div class="l hd">'+pos+'</div><div class="mid">種類</div><div class="hd">'+neg+'</div>';
+      D.cats.forEach(function(c){var a=D.items.filter(function(i){return i.cat===c&&i[key]===1}),b=D.items.filter(function(i){return i.cat===c&&i[key]===-1});
+        s+='<div class="l">'+a.map(chip).join('')+(a.length?' <b>'+a.length+'</b>':'')+'</div><div class="mid" style="border-left:5px solid '+cc(c)+'">'+esc(c)+'</div><div>'+(b.length?'<b>'+b.length+'</b> ':'')+b.map(chip).join('')+'</div>'});
+      var ta=D.items.filter(function(i){return i[key]===1}).length,tb=D.items.filter(function(i){return i[key]===-1}).length;
+      return '<h5>'+title+'（'+pos+' '+ta+'個 ／ '+neg+' '+tb+'個）</h5>'+s+'</div>'}
+    return side('like','好き','嫌い','対比：好きと嫌い')+side('skill','得意','苦手','対比：得意と苦手')+'<p class="cap">「ふつう」の言葉は、この図には出していません。</p>'};
+  V.venn=function(){var A=function(f){return D.items.filter(f)},L=function(i){return i.like===1},S=function(i){return i.skill===1},Q=function(i){return i.ask};
+    var r={all:A(function(i){return L(i)&&S(i)&&Q(i)}),ls:A(function(i){return L(i)&&S(i)&&!Q(i)}),lq:A(function(i){return L(i)&&!S(i)&&Q(i)}),sq:A(function(i){return !L(i)&&S(i)&&Q(i)}),
+      l:A(function(i){return L(i)&&!S(i)&&!Q(i)}),s:A(function(i){return !L(i)&&S(i)&&!Q(i)}),q:A(function(i){return !L(i)&&!S(i)&&Q(i)}),none:A(function(i){return !L(i)&&!S(i)&&!Q(i)})};
+    function num(x,y,n,big){return '<text x="'+x+'" y="'+y+'" font-size="'+(big?34:24)+'" font-weight="700" text-anchor="middle" fill="#2b2a28">'+n+'</text>'}
+    var s='<svg id="svgOut" viewBox="-300 -230 600 480" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" style="max-width:560px;margin:0 auto"><rect x="-300" y="-230" width="600" height="480" fill="#fff"/>'+
+      '<circle cx="-75" cy="-45" r="135" fill="#3d7a5a" fill-opacity=".22" stroke="#3d7a5a" stroke-width="3"/><circle cx="75" cy="-45" r="135" fill="#1f3a5f" fill-opacity=".2" stroke="#1f3a5f" stroke-width="3"/><circle cx="0" cy="80" r="135" fill="#a57a1c" fill-opacity=".24" stroke="#a57a1c" stroke-width="3"/>'+
+      '<text x="-175" y="-190" font-size="20" font-weight="700" fill="#3d7a5a" text-anchor="middle">好き</text><text x="175" y="-190" font-size="20" font-weight="700" fill="#1f3a5f" text-anchor="middle">得意</text><text x="0" y="240" font-size="20" font-weight="700" fill="#a57a1c" text-anchor="middle">頼まれた</text>'+
+      num(-135,-75,r.l.length)+num(135,-75,r.s.length)+num(0,160,r.q.length)+num(0,-95,r.ls.length)+num(-78,55,r.lq.length)+num(78,55,r.sq.length)+num(0,12,r.all.length,true)+'</svg>';
+    function reg(t,h,its,core){return '<div'+(core?' class="core"':'')+'><b>'+t+'（'+its.length+'個）</b><span class="cap">'+h+'</span><br>'+(its.length?its.map(chip).join(''):'<span class="cap">該当なし</span>')+'</div>'}
+    return '<h5>ベン図：好き・得意・頼まれた の重なり</h5>'+s+SAVE+'<div class="regions">'+
+      reg('3つとも重なる（真ん中）','売り物の種。ここを出発点にします',r.all,true)+
+      reg('得意 × 頼まれた','相手にとって値打ちがある。続け方を工夫する',r.sq)+reg('好き × 得意','まだ人に知られていない力。見せる場を作る',r.ls)+
+      reg('好き × 頼まれた','期待されている。力をつければ種になる',r.lq)+reg('好きだけ','楽しみとして持っておく。学べば広がる',r.l)+
+      reg('得意だけ','頼まれてはいない。必要な人がいるかを確かめる',r.s)+reg('頼まれただけ','引き受けすぎに気をつける',r.q)+
+      reg('どの輪にも入らない','印の付かなかった言葉',r.none)+'</div>'};
+  V.sum=function(){var f=function(fn){return D.items.filter(fn).map(function(i){return i.k+(i.ask?'（◎）':'')})};
+    var st=f(function(i){return i.like===1&&i.skill===1}),st2=f(function(i){return i.like!==1&&i.skill===1}),wk=f(function(i){return i.skill===-1}),
+      gr=f(function(i){return i.like===1&&i.skill===-1}),no=f(function(i){return i.like===-1&&i.skill===-1}),hub=D.items.slice().filter(function(i){return i.deg>=3}).sort(function(a,b){return b.deg-a.deg}).map(function(i){return i.k+'（'+i.deg+'本）'});
+    var byCat=D.cats.map(function(c){return c+' '+D.items.filter(function(i){return i.cat===c}).length+'個'});
+    var rows=[['言葉の数',D.items.length+'個（'+byCat.join('／')+'）'],['強みの候補（好き × 得意）',st.join('、')||'該当なし'],['得意だが、好きとは言えないもの',st2.join('、')||'該当なし'],
+      ['弱みの候補（苦手）',wk.join('、')||'該当なし'],['これから身につけたいもの（好き × 苦手）',gr.join('、')||'該当なし'],['やらないことの候補（嫌い × 苦手）',no.join('、')||'該当なし'],['つながりが集まる言葉（3本以上）',hub.join('、')||'該当なし']];
+    V._txt=rows.map(function(r){return '■'+r[0]+'\n'+r[1]}).join('\n\n');
+    return '<h5>まとめ：強み・弱みの下書き</h5><table>'+rows.map(function(r){return '<tr><th style="width:36%">'+r[0]+'</th><td>'+esc(r[1])+'</td></tr>'}).join('')+
+      '</table><p class="cap">（◎）は、人から頼まれたことがある言葉です。ここに出るのは候補です。実際にうまくいったかどうかは、フィードバック分析で確かめます。</p><div class="btns"><button type="button" class="b" id="cpSum">この下書きを文字としてコピーする</button></div>'};
+  var SAVE='<div class="btns"><button type="button" class="b" id="svSvg">この図を画像で保存する</button></div>';
+
+  function show(v){cur=v;[].forEach.call($('tabs').children,function(b){b.classList.toggle('on',b.getAttribute('data-v')===v)});
+    $('view').innerHTML=V[v]();
+    var sv=$('svSvg');if(sv)sv.addEventListener('click',saveSvg);
+    if(v==='net'&&$('svgOut')){netPick($('svgOut'));netPan($('svgOut'))}
+    var cp=$('cpSum');if(cp)cp.addEventListener('click',function(){copyText(V._txt,cp)})}
+  // 言葉のつながり：選んだ言葉と、つながっている言葉だけを残す
+  function netPick(svg){var sel=null,hint=$('netHint'),base=hint.textContent;
+    function apply(){var keep={};
+      if(sel!==null){keep[sel]=1;D.edges.forEach(function(e){if(e[0]===sel)keep[e[1]]=1;if(e[1]===sel)keep[e[0]]=1})}
+      [].forEach.call(svg.querySelectorAll('.nd'),function(n){n.classList.toggle('dim',sel!==null&&!keep[n.getAttribute('data-i')])});
+      [].forEach.call(svg.querySelectorAll('line'),function(l){l.classList.toggle('dim',sel!==null&&+l.getAttribute('data-a')!==sel&&+l.getAttribute('data-b')!==sel)});
+      if(sel===null){hint.textContent=base}
+      else{var names=Object.keys(keep).filter(function(k){return +k!==sel}).map(function(k){return D.items[k].k});
+        hint.innerHTML='<b>'+esc(D.items[sel].k)+'</b> とつながっている言葉（'+names.length+'個）：'+esc(names.join('、'))+'　／　もう一度押すと元に戻ります。'}}
+    svg.addEventListener('click',function(ev){var t=ev.target,i=t.getAttribute&&t.getAttribute('data-i');
+      if(t.classList&&t.classList.contains('nd')&&i!==null){i=+i;sel=(sel===i)?null:i}else sel=null;apply()})}
+  // 右クリックしながらドラッグで、図をつまんで動かす（viewBoxをずらす方式。2026-10-03 Kei指示）
+  function netPan(svg){var v0=svg.getAttribute('viewBox').split(' ').map(Number),px=0,py=0,drag=null;
+    svg.setAttribute('data-vb0',svg.getAttribute('viewBox'));
+    function put(){svg.setAttribute('viewBox',(v0[0]+px)+' '+(v0[1]+py)+' '+v0[2]+' '+v0[3])}
+    svg.addEventListener('contextmenu',function(e){e.preventDefault()});
+    svg.addEventListener('pointerdown',function(e){if(e.button!==2)return;e.preventDefault();drag={x:e.clientX,y:e.clientY,px:px,py:py};
+      try{svg.setPointerCapture(e.pointerId)}catch(_){}svg.style.cursor='grabbing'});
+    svg.addEventListener('pointermove',function(e){if(!drag)return;var r=svg.getBoundingClientRect(),k=Math.max(v0[2]/r.width,v0[3]/r.height);
+      px=drag.px-(e.clientX-drag.x)*k;py=drag.py-(e.clientY-drag.y)*k;put()});
+    function end(e){if(!drag)return;drag=null;svg.style.cursor='';try{svg.releasePointerCapture(e.pointerId)}catch(_){}}
+    svg.addEventListener('pointerup',end);svg.addEventListener('pointercancel',end);
+    svg.addEventListener('dblclick',function(){px=0;py=0;put()})}
+  function load(text,from){var d=parse(text);
+    if(!d.items.length){$('stat').innerHTML='<b style="color:#b3261e">表を読み取れませんでした。</b>1行目が「| キーワード | カテゴリ | 好き嫌い | 得意苦手 | 頼まれた | 関連 |」の形の表か、「言葉, 種類, 好き嫌い, 得意苦手, 頼まれた」をカンマで区切った行になっているかを確かめてください。';$('tabs').hidden=true;$('view').innerHTML='';D=null;return}
+    D=d;$('stat').innerHTML='<b>'+esc(from)+'</b>を読み取りました：言葉 '+d.items.length+'個／種類 '+d.cats.length+'／つながり '+d.edges.length+'本';
+    $('tabs').hidden=false;show(cur)}
+  function readFile(f){if(!f)return;var r=new FileReader();r.onload=function(){$('ta').value=r.result;load(String(r.result),f.name)};r.readAsText(f,'utf-8')}
+  var dz=$('drop');
+  ['dragenter','dragover'].forEach(function(e){dz.addEventListener(e,function(ev){ev.preventDefault();dz.classList.add('over')})});
+  ['dragleave','drop'].forEach(function(e){dz.addEventListener(e,function(ev){ev.preventDefault();dz.classList.remove('over')})});
+  dz.addEventListener('drop',function(ev){readFile(ev.dataTransfer.files[0])});
+  window.addEventListener('dragover',function(e){e.preventDefault()});window.addEventListener('drop',function(e){e.preventDefault()});
+  $('pick').addEventListener('click',function(){$('file').click()});
+  $('file').addEventListener('change',function(){readFile(this.files[0]);this.value=''});
+  $('go').addEventListener('click',function(){load($('ta').value,'貼り付けた表')});
+  $('demo').addEventListener('click',function(){$('ta').value=SAMPLE;load(SAMPLE,'見本のデータ（Aさん・架空）')});
+  $('clr').addEventListener('click',function(){$('ta').value='';D=null;$('tabs').hidden=true;$('view').innerHTML='';$('stat').textContent='入れた内容を消しました。'});
+  $('dl').addEventListener('click',function(){down(new Blob([SAMPLE],{type:'text/markdown'}),'tanaoroshi_mihon.md')});
+  [].forEach.call($('tabs').children,function(b){b.addEventListener('click',function(){show(b.getAttribute('data-v'))})});
+
+  function down(blob,name){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href)},2000)}
+  function saveSvg(){var el=$('svgOut');if(!el)return;var vb=el.viewBox.baseVal,sc=2,c=document.createElement('canvas');c.width=vb.width*sc;c.height=vb.height*sc+60;
+    var s=el.cloneNode(true);s.setAttribute('width',vb.width*sc);s.setAttribute('height',vb.height*sc);s.removeAttribute('style');s.removeAttribute('id');if(el.getAttribute('data-vb0'))s.setAttribute('viewBox',el.getAttribute('data-vb0'));
+    var im=new Image();im.onload=function(){var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0);
+      x.fillStyle='#5d5a55';x.font='22px "Yu Gothic UI","Hiragino Sans","Meiryo",sans-serif';x.textAlign='right';x.fillText('制作：上村コーチ　© 2026 Kei UEMURA',c.width-24,c.height-22);
+      c.toBlob(function(b){down(b,'棚卸し_'+({mind:'マインドマップ',net:'言葉のつながり',venn:'ベン図'}[cur]||'図')+'.png')},'image/png')};
+    im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(s))}
+  function copyText(t,btn){var done=function(){var o=btn.textContent;btn.textContent='コピーしました';setTimeout(function(){btn.textContent=o},1600)};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fb)}else fb();
+    function fb(){var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy');done()}catch(e){}a.remove()}}
+  [].forEach.call(document.querySelectorAll('.copy'),function(b){b.addEventListener('click',function(){copyText($(b.getAttribute('data-c')).textContent,b)})});
+
+  // 書き方の例：押すと大きく表示、もう一度押すと閉じる
+  var lb=$('lb'),lbi=lb.querySelector('img');
+  function openLb(im){lbi.src=im.src;lbi.alt=im.alt;lb.classList.add('show')}
+  function closeLb(){lb.classList.remove('show');lbi.removeAttribute('src')}
+  [].forEach.call(document.querySelectorAll('.thumbs img'),function(im){im.addEventListener('click',function(){openLb(im)});
+    im.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();openLb(im)}})});
+  lb.addEventListener('click',closeLb);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLb()});
+
+  $('top').addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+  var nav=$('nav'),links=[].slice.call(nav.querySelectorAll('a')),secs=links.map(function(a){return $(a.getAttribute('href').slice(1))});
+  function onScroll(){nav.classList.toggle('show',window.scrollY>260);var c=0;secs.forEach(function(s,i){if(s.getBoundingClientRect().top<120)c=i});
+    links.forEach(function(a,i){var on=i===c;if(on&&!a.classList.contains('on')&&nav.scrollWidth>nav.clientWidth)nav.scrollLeft=a.offsetLeft-40;a.classList.toggle('on',on)})}
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+})();
+</script>
+</body>
+</html>
