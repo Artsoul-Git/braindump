@@ -392,6 +392,7 @@ button.b:hover{background:var(--navy-bg)} button.b.main{background:var(--navy);c
     <button type="button" class="b" id="demo">見本のデータで試す</button>
     <button type="button" class="b" id="dl">見本のファイルを保存する</button>
     <button type="button" class="b" id="clr">入れた内容を消す</button>
+    <button type="button" class="b" id="all">結果の一括取得</button>
   </div>
   <div id="stat" class="cap">まだ何も入っていません。「見本のデータで試す」を押すと、Aさん（架空の人物）の例で図が出ます。</div>
 
@@ -637,11 +638,63 @@ button.b:hover{background:var(--navy-bg)} button.b.main{background:var(--navy);c
     V._txt=rows.map(function(r){return '■'+r[0]+'\n'+r[1]}).join('\n\n');
     return '<h5>まとめ：強み・弱みの下書き</h5><table>'+rows.map(function(r){return '<tr><th style="width:36%">'+r[0]+'</th><td>'+esc(r[1])+'</td></tr>'}).join('')+
       '</table><p class="cap">（◎）は、人から頼まれたことがある言葉です。ここに出るのは候補です。実際にうまくいったかどうかは、フィードバック分析で確かめます。</p><div class="btns"><button type="button" class="b" id="cpSum">この下書きを文字としてコピーする</button></div>'};
-  var SAVE='<div class="btns"><button type="button" class="b" id="svSvg">この図を画像で保存する</button></div>';
+  var SAVE=''; // 保存ボタンは show() が全部の図に共通で付ける
+  var VIEWS=[['group','グループ'],['matrix','マトリクス'],['mind','マインドマップ'],['net','言葉のつながり'],['heat','種類どうしの関係'],['vs','対比'],['venn','ベン図'],['sum','まとめ']];
+  var PROPS=['color','background-color','font-size','font-weight','font-family','font-style','line-height','letter-spacing','display','grid-template-columns','grid-column-start','grid-column-end','gap','flex-wrap','align-items','justify-content',
+    'padding-top','padding-right','padding-bottom','padding-left','margin-top','margin-right','margin-bottom','margin-left','border-top','border-right','border-bottom','border-left','border-radius','border-collapse',
+    'text-align','vertical-align','width','min-height','max-width','box-sizing','opacity','white-space','fill','stroke','stroke-width','text-anchor','overflow-x'];
+  // 表示中の図（見出し・凡例・表を含む）を1枚の画像にする
+  function capture(el,cb){
+    var w=el.offsetWidth,clone=el.cloneNode(true),src=el.querySelectorAll('*'),dst=clone.querySelectorAll('*'),i,j;
+    for(i=0;i<src.length;i++){var cs=getComputedStyle(src[i]),t='';
+      for(j=0;j<PROPS.length;j++){var v=cs.getPropertyValue(PROPS[j]);if(v)t+=PROPS[j]+':'+v+';'}
+      if(src[i].tagName.toLowerCase()==='svg')t+='height:auto;';
+      dst[i].setAttribute('style',t)}
+    [].forEach.call(clone.querySelectorAll('.btns,#netHint,button'),function(n){n.remove()});
+    [].forEach.call(clone.querySelectorAll('.dim'),function(n){n.classList.remove('dim')});
+    [].forEach.call(clone.querySelectorAll('svg[data-vb0]'),function(n){n.setAttribute('viewBox',n.getAttribute('data-vb0'))}); // 動かした図は元の位置で保存
+    var box=document.createElement('div');box.style.cssText='position:absolute;left:-99999px;top:0;width:'+w+'px;padding:0;background:#fff;font-family:"Yu Gothic UI","Hiragino Sans","Meiryo",sans-serif;font-size:18px;line-height:1.95;color:#2b2a28';
+    box.appendChild(clone);document.body.appendChild(box);var h=box.offsetHeight;document.body.removeChild(box);
+    clone.removeAttribute('id');var pad=24,W=w+pad*2,H=h+pad*2+44;
+    var xml='<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'"><foreignObject x="0" y="0" width="'+W+'" height="'+H+'">'+
+      '<div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;width:'+W+'px;height:'+H+'px;padding:'+pad+'px;background:#fff;'+'font-family:sans-serif;font-size:18px;line-height:1.95;color:#2b2a28">'+
+      new XMLSerializer().serializeToString(clone)+'</div></foreignObject></svg>';
+    var im=new Image();im.onload=function(){try{var sc=2,c=document.createElement('canvas');c.width=W*sc;c.height=H*sc;var x=c.getContext('2d');
+        x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);
+        x.fillStyle='#5d5a55';x.font=(13*sc)+'px "Yu Gothic UI","Hiragino Sans","Meiryo",sans-serif';x.textAlign='right';x.fillText('制作：上村コーチ　© 2026 Kei UEMURA',c.width-pad*sc,c.height-16*sc);
+        c.toBlob(function(b){cb(b)},'image/png')}catch(e){cb(null)}};
+    im.onerror=function(){cb(null)};
+    im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(xml)}
+  var NOSAVE='この端末のブラウザでは、画像にできませんでした。パソコンの Chrome か Edge でお試しください。';
+  function saveView(){var name=VIEWS.filter(function(v){return v[0]===cur})[0][1];
+    capture($('view'),function(b){if(!b){alert(NOSAVE);return}down(b,'棚卸し_'+name+'.png')})}
+  // ZIP（無圧縮）を作る
+  var CRC=(function(){var t=[],n,k,c;for(n=0;n<256;n++){c=n;for(k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+  function crc32(u){var c=0xFFFFFFFF;for(var i=0;i<u.length;i++)c=CRC[(c^u[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
+  function zip(files){var enc=new TextEncoder(),parts=[],cd=[],off=0;
+    function u16(n){return [n&255,(n>>>8)&255]}function u32(n){return [n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255]}
+    files.forEach(function(f){var nm=enc.encode(f.name),crc=crc32(f.data),sz=f.data.length;
+      var lh=new Uint8Array([0x50,0x4b,3,4,20,0,0,8,0,0,0,0,0x21,0].concat(u32(crc),u32(sz),u32(sz),u16(nm.length),u16(0)));
+      parts.push(lh,nm,f.data);
+      cd.push(new Uint8Array([0x50,0x4b,1,2,20,0,20,0,0,8,0,0,0,0,0x21,0].concat(u32(crc),u32(sz),u32(sz),u16(nm.length),u16(0),u16(0),u16(0),u16(0),u32(0),u32(off))),nm);
+      off+=lh.length+nm.length+sz});
+    var cdLen=cd.reduce(function(a,b){return a+b.length},0);
+    var end=new Uint8Array([0x50,0x4b,5,6,0,0,0,0].concat(u16(files.length),u16(files.length),u32(cdLen),u32(off),u16(0)));
+    return new Blob(parts.concat(cd,[end]),{type:'application/zip'})}
+  function saveAll(){if(!D){$('stat').textContent='先に表を入れて「図にする」を押してください。';return}
+    var btn=$('all'),keep=cur,label=btn.textContent,files=[],i=0;btn.disabled=true;
+    function next(){if(i>=VIEWS.length){show(keep);
+        files.push({name:'09_まとめ.txt',data:new TextEncoder().encode((V.sum(),V._txt)+'\r\n')});
+        btn.disabled=false;btn.textContent=label;down(zip(files),'棚卸し_結果一式.zip');return}
+      var v=VIEWS[i];btn.textContent='作成中… '+(i+1)+'／'+VIEWS.length;show(v[0]);
+      setTimeout(function(){capture($('view'),function(b){
+        if(!b){show(keep);btn.disabled=false;btn.textContent=label;alert(NOSAVE);return}
+        b.arrayBuffer().then(function(a){files.push({name:('0'+(i+1))+'_'+v[1]+'.png',data:new Uint8Array(a)});i++;next()})})},80)}
+    next()}
 
   function show(v){cur=v;[].forEach.call($('tabs').children,function(b){b.classList.toggle('on',b.getAttribute('data-v')===v)});
-    $('view').innerHTML=V[v]();
-    var sv=$('svSvg');if(sv)sv.addEventListener('click',saveSvg);
+    $('view').innerHTML=V[v]()+'<div class="btns"><button type="button" class="b" id="svImg">この図を画像で保存する</button></div>';
+    $('svImg').addEventListener('click',saveView);
     if(v==='net'&&$('svgOut')){netPick($('svgOut'));netPan($('svgOut'))}
     var cp=$('cpSum');if(cp)cp.addEventListener('click',function(){copyText(V._txt,cp)})}
   // 言葉のつながり：選んだ言葉と、つながっている言葉だけを残す
@@ -682,16 +735,11 @@ button.b:hover{background:var(--navy-bg)} button.b.main{background:var(--navy);c
   $('go').addEventListener('click',function(){load($('ta').value,'貼り付けた表')});
   $('demo').addEventListener('click',function(){$('ta').value=SAMPLE;load(SAMPLE,'見本のデータ（Aさん・架空）')});
   $('clr').addEventListener('click',function(){$('ta').value='';D=null;$('tabs').hidden=true;$('view').innerHTML='';$('stat').textContent='入れた内容を消しました。'});
+  $('all').addEventListener('click',saveAll);
   $('dl').addEventListener('click',function(){down(new Blob([SAMPLE],{type:'text/markdown'}),'tanaoroshi_mihon.md')});
   [].forEach.call($('tabs').children,function(b){b.addEventListener('click',function(){show(b.getAttribute('data-v'))})});
 
   function down(blob,name){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href)},2000)}
-  function saveSvg(){var el=$('svgOut');if(!el)return;var vb=el.viewBox.baseVal,sc=2,c=document.createElement('canvas');c.width=vb.width*sc;c.height=vb.height*sc+60;
-    var s=el.cloneNode(true);s.setAttribute('width',vb.width*sc);s.setAttribute('height',vb.height*sc);s.removeAttribute('style');s.removeAttribute('id');if(el.getAttribute('data-vb0'))s.setAttribute('viewBox',el.getAttribute('data-vb0'));
-    var im=new Image();im.onload=function(){var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0);
-      x.fillStyle='#5d5a55';x.font='22px "Yu Gothic UI","Hiragino Sans","Meiryo",sans-serif';x.textAlign='right';x.fillText('制作：上村コーチ　© 2026 Kei UEMURA',c.width-24,c.height-22);
-      c.toBlob(function(b){down(b,'棚卸し_'+({mind:'マインドマップ',net:'言葉のつながり',venn:'ベン図'}[cur]||'図')+'.png')},'image/png')};
-    im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(s))}
   function copyText(t,btn){var done=function(){var o=btn.textContent;btn.textContent='コピーしました';setTimeout(function(){btn.textContent=o},1600)};
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fb)}else fb();
     function fb(){var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy');done()}catch(e){}a.remove()}}
