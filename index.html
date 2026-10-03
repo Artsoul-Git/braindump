@@ -116,6 +116,17 @@ button.b:hover{background:var(--navy-bg)} button.b.main{background:var(--navy);c
 #lb{position:fixed;inset:0;z-index:50;background:rgba(20,20,20,.86);display:none;align-items:center;justify-content:center;padding:16px;cursor:zoom-out}
 #lb.show{display:flex}
 #lb img{max-width:100%;max-height:100%;border-radius:4px;background:#fff}
+.vthumb{display:flex;gap:16px;align-items:center;margin:18px 0;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:12px 16px}
+.vthumb button{position:relative;flex:none;width:200px;padding:0;border:1px solid var(--line);border-radius:4px;overflow:hidden;background:#000;cursor:pointer;line-height:0}
+.vthumb button img{width:100%;height:auto;display:block;opacity:.88}
+.vthumb button:hover img,.vthumb button:focus img{opacity:1}
+.vthumb .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:52px;height:52px;border-radius:50%;background:rgba(31,58,95,.9);color:#fff;font-size:22px;line-height:52px;text-align:center;padding-left:4px}
+.vthumb p{margin:0;font-size:16px;line-height:1.8}
+.vthumb p b{display:block}
+#vb{position:fixed;inset:0;z-index:50;background:rgba(20,20,20,.9);display:none;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:10px}
+#vb.show{display:flex}
+#vb video{max-width:100%;max-height:calc(100% - 60px);background:#000;border-radius:4px}
+#vb button{font:inherit;font-size:16px;padding:6px 18px;border-radius:4px;border:1px solid #fff;background:transparent;color:#fff;cursor:pointer;align-self:flex-end}
 #view svg .nd{cursor:pointer}
 #view svg .dim{opacity:.12}
 #view svg text.dim{opacity:.18}
@@ -170,6 +181,11 @@ button.b:hover{background:var(--navy-bg)} button.b.main{background:var(--navy);c
   <a href="#s6"><em>⑥ 使う</em><b>設計に生かす</b><span>強み・弱みと「誰に・何を」へ</span></a>
 </div>
 <p class="cap">図1　この一冊の流れ。③は、②で色を塗ると何が分かるかの説明です。</p>
+
+<div class="vthumb">
+  <button type="button" id="vOpen" aria-label="概要の説明動画を再生する"><img src="img/overview_poster.jpg" alt=""><span class="play" aria-hidden="true">▶</span></button>
+  <p><b>動画で見る：この一冊の概要（4分18秒）</b>左の画像を押すと、大きく表示されて再生が始まります。</p>
+</div>
 
 <!-- ============ 1 ============ -->
 <h2 id="s1"><span class="num">1</span>キーワードを書き出す</h2>
@@ -482,6 +498,7 @@ button.b:hover{background:var(--navy-bg)} button.b.main{background:var(--navy);c
 
 <button type="button" id="top" aria-label="ページの先頭へ戻る">▲</button>
 <div id="lb" role="dialog" aria-label="画像を大きく表示（押すと閉じます）"><img alt=""></div>
+<div id="vb" role="dialog" aria-label="概要の説明動画"><button type="button" id="vClose">× 閉じる</button><video id="vEl" controls playsinline preload="none" poster="img/overview_poster.jpg" src="img/overview.mp4"></video></div>
 
 <script>
 (function(){
@@ -758,7 +775,13 @@ button.b:hover{background:var(--navy-bg)} button.b.main{background:var(--navy);c
   [].forEach.call(document.querySelectorAll('.thumbs img'),function(im){im.addEventListener('click',function(){openLb(im)});
     im.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();openLb(im)}})});
   lb.addEventListener('click',closeLb);
-  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLb()});
+  // 概要の動画：サムネを押すと大きく表示して再生、「閉じる」か周りの暗いところを押すと止めて閉じる
+  var vb=$('vb'),vEl=$('vEl');
+  function closeV(){try{vEl.pause()}catch(e){}vb.classList.remove('show')}
+  $('vOpen').addEventListener('click',function(){vb.classList.add('show');var p=vEl.play();if(p&&p.catch)p.catch(function(){})});
+  $('vClose').addEventListener('click',closeV);
+  vb.addEventListener('click',function(e){if(e.target===vb)closeV()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeLb();closeV()}});
 
   $('top').addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
   var nav=$('nav'),links=[].slice.call(nav.querySelectorAll('a')),secs=links.map(function(a){return $(a.getAttribute('href').slice(1))});
