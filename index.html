@@ -647,7 +647,12 @@ button.b:hover{background:var(--navy-bg)} button.b.main{background:var(--navy);c
   function capture(el,cb){
     var w=el.offsetWidth,clone=el.cloneNode(true),src=el.querySelectorAll('*'),dst=clone.querySelectorAll('*'),i,j;
     for(i=0;i<src.length;i++){var cs=getComputedStyle(src[i]),t='';
-      for(j=0;j<PROPS.length;j++){var v=cs.getPropertyValue(PROPS[j]);if(v)t+=PROPS[j]+':'+v+';'}
+      // 文字を含む小さな箱（インライン系・表のセル）の幅は固定しない。画像にするとき文字の幅がわずかに変わり、箱の中で折り返して下が切れるため
+      var fixW=!/^(inline|inline-block|table-cell|table-row|inline-flex)$/.test(cs.display);
+      for(j=0;j<PROPS.length;j++){if(PROPS[j]==='width'&&!fixW)continue;var v=cs.getPropertyValue(PROPS[j]);if(v)t+=PROPS[j]+':'+v+';'}
+      if(src[i].classList&&src[i].classList.contains('chip'))t+='white-space:nowrap;';
+      // 中身のない色見本・棒は、幅と高さをそのまま写す
+      if(!src[i].firstChild&&src[i].namespaceURI==='http://www.w3.org/1999/xhtml')t+='width:'+cs.width+';height:'+cs.height+';';
       if(src[i].tagName.toLowerCase()==='svg')t+='height:auto;';
       dst[i].setAttribute('style',t)}
     [].forEach.call(clone.querySelectorAll('.btns,#netHint,button'),function(n){n.remove()});
@@ -655,6 +660,7 @@ button.b:hover{background:var(--navy-bg)} button.b.main{background:var(--navy);c
     [].forEach.call(clone.querySelectorAll('svg[data-vb0]'),function(n){n.setAttribute('viewBox',n.getAttribute('data-vb0'))}); // 動かした図は元の位置で保存
     var box=document.createElement('div');box.style.cssText='position:absolute;left:-99999px;top:0;width:'+w+'px;padding:0;background:#fff;font-family:"Yu Gothic UI","Hiragino Sans","Meiryo",sans-serif;font-size:18px;line-height:1.95;color:#2b2a28';
     box.appendChild(clone);document.body.appendChild(box);var h=box.offsetHeight;document.body.removeChild(box);
+    h=Math.ceil(h*1.04)+24; // 画像にしたとき行が1つ増えても切れないよう、下に余白を持たせる
     clone.removeAttribute('id');var pad=24,W=w+pad*2,H=h+pad*2+44;
     var xml='<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'"><foreignObject x="0" y="0" width="'+W+'" height="'+H+'">'+
       '<div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;width:'+W+'px;height:'+H+'px;padding:'+pad+'px;background:#fff;'+'font-family:sans-serif;font-size:18px;line-height:1.95;color:#2b2a28">'+
